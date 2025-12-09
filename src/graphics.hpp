@@ -16,6 +16,7 @@ class button
 {
 public:
     button(Rectangle rect, std::string text, std::function<void()> on_press); // Constructor function signature
+    button(Rectangle rect, std::string text, std::function<void(std::string)> on_press, std::string str_arg); // Constructor function signature
 };
 
 /* Constructor defnition
@@ -29,4 +30,17 @@ button::button(Rectangle rect, std::string text, std::function<void()> on_press)
     {
         on_press();
     }
+}
+
+button::button(Rectangle rect, std::string text, std::function<void(std::string)> on_press, std::string str_arg){
+
+    if (GuiButton(rect, text.c_str())){
+        on_press(str_arg);
+    }
+}
+
+constexpr int max_text_size = 2048;
+
+int text_box(Rectangle rect, std::string title, std::string msg, std::string labels, char* input_text){
+    return GuiTextInputBox(rect, title.c_str(), msg.c_str(), labels.c_str(), input_text, max_text_size, NULL);
 }
