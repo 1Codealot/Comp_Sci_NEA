@@ -13,7 +13,7 @@ void compile(std::string path_to_input_file)
     }
 }
 
-        char file_path[max_text_size] = "\0";
+char file_path[max_text_size] = "\0";
 int main()
 {
     startWindow();
@@ -23,9 +23,7 @@ int main()
         BeginDrawing();
         ClearBackground(WHITE);
 
-
-       text_box((Rectangle){50,50,200,150}, "Enter path to input file", "", "Confirm", file_path);
-        
+        text_box((Rectangle){50, 50, 200, 150}, "Enter path to input file", "", "Confirm", file_path);
 
         // Creates the button
         button compile_button((Rectangle){50, 200, 200, 50}, "Transpile!", compile, std::string(file_path));
