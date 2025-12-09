@@ -23,6 +23,7 @@ int main()
         BeginDrawing();
         ClearBackground(WHITE);
 
+        // Creates the text box when the user will input the /path/to/file
         text_box((Rectangle){50, 50, 200, 150}, "Enter path to input file", "", "Confirm", file_path);
 
         // Creates the button

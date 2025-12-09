@@ -15,6 +15,7 @@ void startWindow()
 class button
 {
 public:
+    // This uses a C++ feature known as overloading which allows me to create multiple functions with the smae nambe, but different types
     button(Rectangle rect, std::string text, std::function<void()> on_press);                                 // Constructor function signature
     button(Rectangle rect, std::string text, std::function<void(std::string)> on_press, std::string str_arg); // Constructor function signature
 };
@@ -31,7 +32,12 @@ button::button(Rectangle rect, std::string text, std::function<void()> on_press)
         on_press();
     }
 }
-
+/* Constructor defnition
+rect = Rectangular bounding area for the button.
+text = text to show on the button.
+on_press = name of function to run when the button is pressed. This funtion must be of return type `void` and have one argument of type std::string.
+str_arg = the string to be passed as an arguement to the passed in funtion.
+*/
 button::button(Rectangle rect, std::string text, std::function<void(std::string)> on_press, std::string str_arg)
 {
 
@@ -41,8 +47,15 @@ button::button(Rectangle rect, std::string text, std::function<void(std::string)
     }
 }
 
+// Maximum length of a C-style string.
 constexpr int max_text_size = 2048;
 
+/* Defines the text box used.
+rect = Rectangular bounding area for the text input box.
+title = tilte of the text input box.
+labels = labels of the buttons used in the text input box, delimited by ';' to denote a new button.
+input_text = a pointer to the C-style string where teh contents of the text box will be sent to.
+*/
 int text_box(Rectangle rect, std::string title, std::string msg, std::string labels, char *input_text)
 {
     return GuiTextInputBox(rect, title.c_str(), msg.c_str(), labels.c_str(), input_text, max_text_size, NULL);
