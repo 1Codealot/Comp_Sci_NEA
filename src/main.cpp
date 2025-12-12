@@ -32,7 +32,7 @@ int main()
         // Creates the button
         button compile_button((Rectangle){50, 200, 200, 50}, "Transpile!", compile, std::string(file_path));
 
-        scrollable_text_box((Rectangle){400,50, 400,500}, long_text, max_text_size);
+        scrollable_text_box((Rectangle){400,50, 400,500}, long_text);
 
         EndDrawing();
 

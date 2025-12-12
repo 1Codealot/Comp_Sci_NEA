@@ -62,7 +62,6 @@ int text_box(Rectangle rect, std::string title, std::string msg, std::string lab
 }
 
 int scroll_offset = 15;
-
 /* Creates a text area that can be scrolled
 rect = Rectangular bounding area for the text to be rendered in.
 text = The text to be displayed.
@@ -81,8 +80,7 @@ void scrollable_text_box(Rectangle rect, std::string text)
     scroll_offset += (int)(GetMouseWheelMove() * scroll_speed);
 
     for (char c : text)
-    {
-        // The text renderer will not do new lines correctly, so I must correct for that here.
+    {// The text renderer will not do new lines correctly, so I must correct for that here.
         if (c == '\n')
         {
             lines_down++;
@@ -98,7 +96,6 @@ void scrollable_text_box(Rectangle rect, std::string text)
         }
 
         // Check that the chars are in y range includeing scroll.
-
         if (rect.y + (lines_down * char_size) + (scroll_offset) < rect.y + rect.height && rect.y + (lines_down * char_size) + (scroll_offset) > rect.y)
         {
             DrawTextCodepoint(GetFontDefault(), c, {buffer + (chars_across * char_size) + rect.x, rect.y + scroll_offset + (lines_down * char_size) - buffer}, char_size, BLACK);
