@@ -60,3 +60,41 @@ int text_box(Rectangle rect, std::string title, std::string msg, std::string lab
 {
     return GuiTextInputBox(rect, title.c_str(), msg.c_str(), labels.c_str(), input_text, max_text_size, NULL);
 }
+
+int scroll_offset = 15;
+
+void scrollable_text_box(Rectangle rect, std::string text, int max_size)
+{
+    /*
+    get scroll down amount (1=3 lines??)
+    write text if x and y - lines scrolled down >x, >y && <width-x <width-y.
+    */
+
+
+    const int scroll_speed = 15;
+    const int char_size = 15;
+    const int buffer = 7; // roughly char_size / 2
+    int chars_across = 0;
+    int lines_down = 0;
+
+    DrawRectangle(rect.x, rect.y, rect.width, rect.height + buffer, GRAY);
+
+    scroll_offset += (int)(GetMouseWheelMove() * scroll_speed);
+
+    for (char c : text)
+    {
+        if ((chars_across * char_size) + rect.x > rect.x + (rect.width - char_size))
+        {
+            lines_down++;
+            chars_across = 0;
+        }
+
+        // CHeck that the chars are in y range includeing scroll.
+
+        if (rect.y + (lines_down * char_size) + (scroll_offset) < rect.y + rect.height &&  rect.y + (lines_down * char_size) + (scroll_offset) > rect.y)
+        {
+            DrawTextCodepoint(GetFontDefault(), c, {buffer + (chars_across*char_size) + rect.x, + rect.y + scroll_offset + (lines_down*char_size) - buffer}, char_size, BLACK);
+        }
+        chars_across++;
+    }
+}
