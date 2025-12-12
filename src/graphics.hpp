@@ -65,12 +65,6 @@ int scroll_offset = 15;
 
 void scrollable_text_box(Rectangle rect, std::string text, int max_size)
 {
-    /*
-    get scroll down amount (1=3 lines??)
-    write text if x and y - lines scrolled down >x, >y && <width-x <width-y.
-    */
-
-
     const int scroll_speed = 15;
     const int char_size = 15;
     const int buffer = 7; // roughly char_size / 2
@@ -83,17 +77,25 @@ void scrollable_text_box(Rectangle rect, std::string text, int max_size)
 
     for (char c : text)
     {
+        if (c == '\n')
+        {
+            lines_down++;
+            chars_across = 0;
+            continue;
+        }
+
         if ((chars_across * char_size) + rect.x > rect.x + (rect.width - char_size))
         {
             lines_down++;
             chars_across = 0;
         }
 
-        // CHeck that the chars are in y range includeing scroll.
+        // Check that the chars are in y range includeing scroll.
 
-        if (rect.y + (lines_down * char_size) + (scroll_offset) < rect.y + rect.height &&  rect.y + (lines_down * char_size) + (scroll_offset) > rect.y)
+        if (rect.y + (lines_down * char_size) + (scroll_offset) < rect.y + rect.height && rect.y + (lines_down * char_size) + (scroll_offset) > rect.y)
         {
-            DrawTextCodepoint(GetFontDefault(), c, {buffer + (chars_across*char_size) + rect.x, + rect.y + scroll_offset + (lines_down*char_size) - buffer}, char_size, BLACK);
+            DrawTextCodepoint(GetFontDefault(), c, {buffer + (chars_across * char_size) + rect.x, 
+                rect.y + scroll_offset + (lines_down * char_size) - buffer}, char_size, BLACK);
         }
         chars_across++;
     }
