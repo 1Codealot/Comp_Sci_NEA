@@ -63,7 +63,11 @@ int text_box(Rectangle rect, std::string title, std::string msg, std::string lab
 
 int scroll_offset = 15;
 
-void scrollable_text_box(Rectangle rect, std::string text, int max_size)
+/* Creates a text area that can be scrolled
+rect = Rectangular bounding area for the text to be rendered in.
+text = The text to be displayed.
+*/
+void scrollable_text_box(Rectangle rect, std::string text)
 {
     const int scroll_speed = 15;
     const int char_size = 15;
@@ -71,12 +75,14 @@ void scrollable_text_box(Rectangle rect, std::string text, int max_size)
     int chars_across = 0;
     int lines_down = 0;
 
+    // Draws the background.
     DrawRectangle(rect.x, rect.y, rect.width, rect.height + buffer, GRAY);
 
     scroll_offset += (int)(GetMouseWheelMove() * scroll_speed);
 
     for (char c : text)
     {
+        // The text renderer will not do new lines correctly, so I must correct for that here.
         if (c == '\n')
         {
             lines_down++;
@@ -84,6 +90,7 @@ void scrollable_text_box(Rectangle rect, std::string text, int max_size)
             continue;
         }
 
+        // Character (not word) wrapping. I.E. if a letter would go out the bounding area, move it to a new line
         if ((chars_across * char_size) + rect.x > rect.x + (rect.width - char_size))
         {
             lines_down++;
@@ -94,8 +101,7 @@ void scrollable_text_box(Rectangle rect, std::string text, int max_size)
 
         if (rect.y + (lines_down * char_size) + (scroll_offset) < rect.y + rect.height && rect.y + (lines_down * char_size) + (scroll_offset) > rect.y)
         {
-            DrawTextCodepoint(GetFontDefault(), c, {buffer + (chars_across * char_size) + rect.x, 
-                rect.y + scroll_offset + (lines_down * char_size) - buffer}, char_size, BLACK);
+            DrawTextCodepoint(GetFontDefault(), c, {buffer + (chars_across * char_size) + rect.x, rect.y + scroll_offset + (lines_down * char_size) - buffer}, char_size, BLACK);
         }
         chars_across++;
     }
