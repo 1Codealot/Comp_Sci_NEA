@@ -67,6 +67,23 @@ namespace tokeniser // So thaat in future I can tell where functions come from.
                 }
                 i += 2;
             }
+
+            // Join together strings
+            std::string holder = "";
+            if(tokens_in.at(i) == "\""){
+                holder += "\"";
+                i++;
+                while (tokens_in.at(i) != "\"")
+                {
+                    holder += tokens_in.at(i);
+                    i++;
+                }
+                holder += "\"";
+                new_tokens.push_back(holder);
+                continue;                
+            }
+
+
             new_tokens.push_back(tokens_in.at(i));
         }
         return new_tokens;
