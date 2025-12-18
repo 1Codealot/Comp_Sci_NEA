@@ -19,7 +19,7 @@ int main(int argc, char const *argv[])
 
     std::vector<std::string> tokens;
 
-    tokens = stage1(code);
+    tokens = tokeniser::stage1(code);
 
     for (std::string token : tokens)
     {
