@@ -9,9 +9,11 @@ std::vector<std::string> stage1(std::string input_code)
 
     for (char current_char : input_code)
     {
+        current_token = "";
         if (special_chars.contains(current_char))
         {
             tokens.push_back(current_token);
+            std::cout << current_token << "\n";
             if (current_char != ' ')
             {
                 tokens.push_back("" + current_char); // Interesting hack to add just a character into a std::vector that expects a std::string.

@@ -1,5 +1,6 @@
 #include <iostream>
 #include <fstream>
+#include <streambuf>
 #include "../src/tokeniser.hpp"
 
 int main(int argc, char const *argv[])
@@ -12,10 +13,11 @@ int main(int argc, char const *argv[])
 
 
     std::cout << argv[1] << "\n";
-    std::string code;
-    std::fstream code_in(argv[2]);
+    std::ifstream code_in(argv[1]);
+    std::string code((std::istreambuf_iterator<char>(code_in)), std::istreambuf_iterator<char>());
 
-    while (std::getline(code_in, code));
+
+    std::cout << code << "\n";
 
     std::vector<std::string> tokens;
 
