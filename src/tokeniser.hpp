@@ -76,8 +76,10 @@ namespace tokeniser // So thaat in future I can tell where functions come from.
                 while (tokens_in.at(i) != "\"")
                 {
                     holder += tokens_in.at(i);
+                    holder += " ";
                     i++;
                 }
+                holder = holder.substr(0, holder.size()-1);
                 holder += "\"";
                 new_tokens.push_back(holder);
                 continue;                
