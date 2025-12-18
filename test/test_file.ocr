@@ -1,0 +1,14 @@
+// This is fake code to test comments
+print("Hello world!") // Side comment
+x = 22 //No space after //
+
+/* Really
+R
+E
+A
+L
+L
+Y
+
+LOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOONG
+comment.*/
