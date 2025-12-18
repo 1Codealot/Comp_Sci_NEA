@@ -43,4 +43,31 @@ namespace tokeniser // So thaat in future I can tell where functions come from.
 
         return tokens;
     }
+
+    std::vector<std::string> stage_2(std::vector<std::string> tokens_in)
+    {
+        std::vector<std::string> new_tokens;
+        for (size_t i = 0; i < tokens_in.size(); i++)
+        {
+            // Remove comments
+            // "//" will be used for line comments "/*" ... "*/" will be used for multi line.
+            if (tokens_in.at(i) == "/" && tokens_in.at(i + 1) == "/")
+            {
+                while (tokens_in.at(i) != "\n")
+                {
+                    i++;
+                }
+            }
+
+            if (tokens_in.at(i) == "/" && tokens_in.at(i + 1) == "*")
+            {
+                while (tokens_in.at(i) != "*" && tokens_in.at(i + 1) != "/")
+                {
+                    i++;
+                }
+            }
+            new_tokens.push_back(tokens_in.at(i));
+        }
+        return new_tokens;
+    }
 };
