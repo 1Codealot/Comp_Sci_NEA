@@ -1,5 +1,6 @@
 #include <string>
 #include <vector>
+#include <regex>
 namespace tokeniser // So thaat in future I can tell where functions come from.
 {
     /* The first stage of tokenisation where all the big words are maade into individual tokens and every special chaaracter is a token
@@ -77,6 +78,24 @@ namespace tokeniser // So thaat in future I can tell where functions come from.
 
             new_tokens.push_back(tokens_in.at(i));
         }
+
+        for (int i = 0; i < new_tokens.size(); i++)
+        {
+            if (new_tokens.at(i) == "\n")
+            {
+                continue;
+            }
+            // Using regex to replace leading and trailing spaces in a token
+            new_tokens.at(i) = std::regex_replace(new_tokens.at(i), std::regex("^\\s"), "");
+            new_tokens.at(i) = std::regex_replace(new_tokens.at(i), std::regex("\\s$"), "");
+
+            // Delete blank tokens
+            if (new_tokens.at(i) == "")
+            {
+                new_tokens.erase(new_tokens.begin() + i);
+                i--;
+            }
+                }
         return new_tokens;
     }
 };
