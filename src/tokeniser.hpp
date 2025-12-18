@@ -44,7 +44,7 @@ namespace tokeniser // So thaat in future I can tell where functions come from.
         return tokens;
     }
 
-    std::vector<std::string> stage_2(std::vector<std::string> tokens_in)
+    std::vector<std::string> stage2(std::vector<std::string> tokens_in)
     {
         std::vector<std::string> new_tokens;
         for (size_t i = 0; i < tokens_in.size(); i++)
@@ -61,13 +61,18 @@ namespace tokeniser // So thaat in future I can tell where functions come from.
 
             if (tokens_in.at(i) == "/" && tokens_in.at(i + 1) == "*")
             {
-                while (tokens_in.at(i) != "*" && tokens_in.at(i + 1) != "/")
+                while (!(tokens_in.at(i) == "*" && tokens_in.at(i + 1) == "/"))
                 {
                     i++;
                 }
+                i += 2;
             }
             new_tokens.push_back(tokens_in.at(i));
         }
         return new_tokens;
     }
 };
+std::vector<std::string> tokenise(std::string code)
+{
+    return tokeniser::stage2(tokeniser::stage1(code));
+}

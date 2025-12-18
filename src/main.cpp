@@ -10,7 +10,7 @@ void compile(std::string path_to_input_file)
     std::ifstream input_file(path_to_input_file);
     std::string code((std::istreambuf_iterator<char>(input_file)), std::istreambuf_iterator<char>());
 
-    std::vector<std::string> tokens = tokeniser::stage1(code);
+    std::vector<std::string> tokens = tokenise(code);
 
     for (std::string token : tokens)
     {
@@ -21,6 +21,7 @@ void compile(std::string path_to_input_file)
         log_text += "[";
         log_text += token;
         log_text += "] ";
+        std::clog << "[" << token << "]\n";
     }
 }
 
