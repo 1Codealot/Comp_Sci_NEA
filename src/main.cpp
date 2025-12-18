@@ -8,22 +8,21 @@ std::string log_text;
 void compile(std::string path_to_input_file)
 {
     std::ifstream input_file(path_to_input_file);
-    std::string tmp;
-    std::string code;
-    while (std::getline(input_file, tmp))
-    {
-        code += tmp;
-    }
-    
+    std::string code((std::istreambuf_iterator<char>(input_file)), std::istreambuf_iterator<char>());
+
     std::vector<std::string> tokens = tokeniser::stage1(code);
 
-    for(std::string token: tokens){
+    for (std::string token : tokens)
+    {
+        if (token == "\n")
+        {
+            token = "\\n";
+        }
         log_text += "[";
         log_text += token;
-        log_text += "] "; 
+        log_text += "] ";
     }
 }
-
 
 char file_path[max_text_size] = "\0";
 
@@ -42,10 +41,9 @@ int main()
         // Creates the button
         button compile_button((Rectangle){50, 200, 200, 50}, "Transpile!", compile, std::string(file_path));
 
-        scrollable_text_box((Rectangle){400,50, 400,500}, log_text);
+        scrollable_text_box((Rectangle){400, 50, 400, 500}, log_text);
 
         EndDrawing();
-
     }
 
     CloseWindow();
