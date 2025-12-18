@@ -1,6 +1,8 @@
 // This is fake code to test comments
-print("Hello world!") // Side comment
+print("This string has a // in it. I wonder what happens?") // Side comment
 x = 22 //No space after //
+y = "This has a /* long comment in it. */ What does that do"
+z= " This  person is    weird  about        spaces.  Curious...   "
 
 /* Really
 R

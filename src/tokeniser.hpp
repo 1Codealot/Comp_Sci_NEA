@@ -14,16 +14,7 @@ namespace tokeniser // So thaat in future I can tell where functions come from.
         // Goes through every character int the string.
         for (size_t i = 0; i < input_code.size(); i++)
         {
-            // Adding the current token when there is a space.
-            if (input_code.at(i) == ' ')
-            {
-                if (current_token != "") // Anti-blank mechanism.
-                {
-                    tokens.push_back(current_token);
-                }
-                current_token = "";
-                continue;
-            }
+            // Removed the space check as it would mess with strings.
 
             // Adds special char acters as a token.
             if (special_chars.contains(input_code.at(i)))
@@ -70,21 +61,19 @@ namespace tokeniser // So thaat in future I can tell where functions come from.
 
             // Join together strings
             std::string holder = "";
-            if(tokens_in.at(i) == "\""){
+            if (tokens_in.at(i) == "\"")
+            {
                 holder += "\"";
                 i++;
                 while (tokens_in.at(i) != "\"")
                 {
                     holder += tokens_in.at(i);
-                    holder += " ";
                     i++;
                 }
-                holder = holder.substr(0, holder.size()-1);
                 holder += "\"";
                 new_tokens.push_back(holder);
-                continue;                
+                continue;
             }
-
 
             new_tokens.push_back(tokens_in.at(i));
         }
