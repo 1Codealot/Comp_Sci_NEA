@@ -8,8 +8,8 @@ std::vector<std::string> stage1(std::string input_code)
 {
     std::vector<std::string> tokens;
     std::string current_token = "";
-    const std::string special_chars = "1234567890-=+*/:\";,.'()\n";
-
+    // Numbers are not here because I want them to be part of tokens that may be identifers
+    const std::string special_chars = "-=+*/:\";,.'()\n";
     // Goes through every character int the string.
     for (size_t i = 0; i < input_code.size(); i++)
     {
