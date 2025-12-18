@@ -1,44 +1,46 @@
 #include <string>
 #include <vector>
-
-/* The first stage of tokenisation where all the big words are maade into individual tokens and every special chaaracter is a token
-input_code = code to be tokenised.
-*/
-std::vector<std::string> stage1(std::string input_code)
+namespace tokeniser // So thaat in future I can tell where functions come from.
 {
-    std::vector<std::string> tokens;
-    std::string current_token = "";
-    // Numbers are not here because I want them to be part of tokens that may be identifers
-    const std::string special_chars = "-=+*/:\";,.'()\n";
-    // Goes through every character int the string.
-    for (size_t i = 0; i < input_code.size(); i++)
+    /* The first stage of tokenisation where all the big words are maade into individual tokens and every special chaaracter is a token
+    input_code = code to be tokenised.
+    */
+    std::vector<std::string> stage1(std::string input_code)
     {
-        // Adding the current token when there is a space.
-        if (input_code.at(i) == ' ')
+        std::vector<std::string> tokens;
+        std::string current_token = "";
+        // Numbers are not here because I want them to be part of tokens that may be identifers
+        const std::string special_chars = "-=+*/:\";,.'()\n";
+        // Goes through every character int the string.
+        for (size_t i = 0; i < input_code.size(); i++)
         {
-            if (current_token != "") // Anti-blank mechanism.
+            // Adding the current token when there is a space.
+            if (input_code.at(i) == ' ')
             {
-                tokens.push_back(current_token);
+                if (current_token != "") // Anti-blank mechanism.
+                {
+                    tokens.push_back(current_token);
+                }
+                current_token = "";
+                continue;
             }
-            current_token = "";
-            continue;
+
+            // Adds special char acters as a token.
+            if (special_chars.contains(input_code.at(i)))
+            {
+                if (current_token != "")
+                {
+
+                    tokens.push_back(current_token);
+                }
+                current_token = "";
+                tokens.push_back(input_code.substr(i, 1));
+                continue;
+            }
+
+            current_token += input_code.at(i);
         }
 
-        // Adds special char acters as a token.
-        if (special_chars.contains(input_code.at(i)))
-        {
-            if (current_token != "")
-            {
-
-                tokens.push_back(current_token);
-            }
-            current_token = "";
-            tokens.push_back(input_code.substr(i, 1));
-            continue;
-        }
-
-        current_token += input_code.at(i);
+        return tokens;
     }
-
-    return tokens;
-}
+};
