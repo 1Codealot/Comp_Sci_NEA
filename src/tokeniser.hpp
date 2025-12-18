@@ -15,18 +15,21 @@ std::vector<std::string> stage1(std::string input_code)
             current_token = "";
             continue;
         }
-        
+
         if (special_chars.contains(input_code.at(i)))
         {
-            tokens.push_back(current_token);
+            if (current_token != "")
+            {
+
+                tokens.push_back(current_token);
+            }
             current_token = "";
-            tokens.push_back(input_code.substr(i,1));
+            tokens.push_back(input_code.substr(i, 1));
             continue;
         }
-        
+
         current_token += input_code.at(i);
     }
-    
 
     return tokens;
 }
