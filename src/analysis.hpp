@@ -23,6 +23,7 @@ namespace analysis
 
         char last_normal = ')';
         char last_square = ']';
+        char last_open = 0;
 
         for (size_t i = 0; i < tokens.size(); i++)
         {
@@ -72,16 +73,18 @@ namespace analysis
             if (tokens.at(i) == "(")
             {
                 last_normal = '(';
+                last_open = '(';
             }
             if (tokens.at(i) == "[")
             {
                 last_square = '[';
+                last_open = '[';
             }
             if (tokens.at(i) == ")")
             {
                 last_normal = ')';
 
-                if (last_square == '[')
+                if (last_square == '[' && last_open == '[')
                 {
                     errors += "Mismatched brackets found; trying to close a normal without first closing the square brackets\n";
                     has_error = true;
@@ -91,7 +94,7 @@ namespace analysis
             {
                 last_square = ']';
 
-                if (last_normal == '(')
+                if (last_normal == '(' && last_open == '(')
                 {
                     errors += "Mismatched brackets found; trying to close a square without first closing the normal brackets\n";
                     has_error = true;

@@ -12,7 +12,7 @@ void compile(std::string path_to_input_file)
     std::ifstream input_file(path_to_input_file);
     std::string code((std::istreambuf_iterator<char>(input_file)), std::istreambuf_iterator<char>());
 
-    std::vector<std::string> tokens = tokenise(code);
+    std::vector<std::string> tokens = tokenise(code + "\n\n");
 
     for (std::string token : tokens)
     {
