@@ -35,7 +35,11 @@ namespace tokeniser // So thaat in future I can tell where functions come from.
 
         return tokens;
     }
-
+    /*
+    The second stage of tokenisation. This is where comments are removed and strings are joined together and
+    where blank tokens are removed.
+    tokens_in = the vector of tokens made by the stage1 function.
+    */
     std::vector<std::string> stage2(std::vector<std::string> tokens_in)
     {
         std::vector<std::string> new_tokens;
@@ -95,10 +99,15 @@ namespace tokeniser // So thaat in future I can tell where functions come from.
                 new_tokens.erase(new_tokens.begin() + i);
                 i--;
             }
-                }
+        }
         return new_tokens;
     }
 };
+
+/*
+Master tokeniser function.
+code = the code in to be tokenised
+*/
 std::vector<std::string> tokenise(std::string code)
 {
     return tokeniser::stage2(tokeniser::stage1(code));
