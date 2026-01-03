@@ -9,6 +9,7 @@ namespace analysis
     /*
     Stage 1 of syntax analysis. This is where the transpiler checks that all the brackets are closed properly
     tokens = fully tokenised tokens
+    returns whether or not there is an error
     */
     bool stage1(std::vector<std::string> tokens)
     {
@@ -32,7 +33,7 @@ namespace analysis
             {
                 normal_count++;
             }
-            if (tokens.at(i) == ")")/* code */
+            if (tokens.at(i) == ")")
             {
                 normal_count--;
             }
@@ -107,7 +108,14 @@ namespace analysis
 
 } // namespace analysis
 
-bool analyse(std::vector<std::string> tokens){
-    return analysis::stage1(tokens) /* || analysis::stage2(tokens) || analysis::stage3(tokens)|| analysis::stage4(tokens)
-    || analysis::stage5(tokens) || analysis::stage6(tokens) || analysis::stage7(tokens)*/ ; 
+/*
+Master analysis function
+tokens = code that has been tokenised
+returns if any of the stages have errors because if there are syntax errors, we cannot continue onto code geneeration.
+*/
+bool analyse(std::vector<std::string> tokens)
+{
+    return analysis::stage1(tokens) /* || analysis::stage2(tokens) || analysis::stage3(tokens) || analysis::stage4(tokens)
+    || analysis::stage5(tokens) || analysis::stage6(tokens) || analysis::stage7(tokens)*/
+        ;
 }
