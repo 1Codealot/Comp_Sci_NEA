@@ -103,3 +103,8 @@ namespace analysis
     }
 
 } // namespace analysis
+
+bool analyse(std::vector<std::string> tokens){
+    return analysis::stage1(tokens) /* || analysis::stage2(tokens) || analysis::stage3(tokens)|| analysis::stage4(tokens)
+    || analysis::stage5(tokens) || analysis::stage6(tokens) || analysis::stage7(tokens)*/ ; 
+}
