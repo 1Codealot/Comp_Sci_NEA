@@ -1,0 +1,2 @@
+// Should say mismatched square brackets (1 too many closes)
+[[]]]

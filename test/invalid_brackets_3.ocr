@@ -1,0 +1,2 @@
+// should say closing a square bracket without closing a closing bracket
+(([([[(])])]))
