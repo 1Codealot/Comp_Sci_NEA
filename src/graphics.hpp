@@ -80,7 +80,7 @@ void scrollable_text_box(Rectangle rect, std::string text)
     scroll_offset += (int)(GetMouseWheelMove() * scroll_speed);
 
     for (char c : text)
-    {// The text renderer will not do new lines correctly, so I must correct for that here.
+    { // The text renderer will not do new lines correctly, so I must correct for that here.
         if (c == '\n')
         {
             lines_down++;
