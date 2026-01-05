@@ -26,15 +26,7 @@ if a
             if d
                 if f
                     if g
-                        if h
-                            if i
-                                if j
-                                    if k
-                                        print("Everything is true!")
-                                    endif
-                                endif
-                            endif
-                        endif
+                        print("Everything is true!")
                     endif
                 endif
             endif
