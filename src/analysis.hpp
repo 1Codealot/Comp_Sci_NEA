@@ -106,6 +106,42 @@ namespace analysis
         return has_error;
     }
 
+    /*
+    Stage 2 of syntax analysis. This is where the transpiler checks that all the nesting is correct.
+    I realised that I don't need to check if all the condtion controllers or the loops need to be checked if they
+    have their correct enders (e.g. checking if an if statment has an endif) as I do that in later stages so
+    it is redundant.
+    tokens = fully tokenised tokens
+    returns whether or not there is an error
+    */
+    bool stage2(std::vector<std::string> tokens)
+    {
+        bool has_error = false;
+
+        int nest_count = 0;
+
+        for (size_t i = 0; i < tokens.size(); i++)
+        {
+            std::string current_token = tokens.at(i);
+            if (current_token == "if" || current_token == "while" || current_token == "for" || current_token == "do")
+            {
+                nest_count++;
+            }
+            if (current_token == "endif" || current_token == "endwhile" || current_token == "next" || current_token == "until")
+            {
+                nest_count--;
+            }
+        }
+
+        if (nest_count != 0)
+        {
+            has_error = true;
+            errors += "Inbalanced nesting\n";
+        }
+
+        return has_error;
+    }
+
 } // namespace analysis
 
 /*
@@ -115,7 +151,7 @@ returns if any of the stages have errors because if there are syntax errors, we 
 */
 bool analyse(std::vector<std::string> tokens)
 {
-    return analysis::stage1(tokens) /* || analysis::stage2(tokens) || analysis::stage3(tokens) || analysis::stage4(tokens)
-    || analysis::stage5(tokens) || analysis::stage6(tokens) || analysis::stage7(tokens)*/
+    return analysis::stage1(tokens) || analysis::stage2(tokens) /*|| analysis::stage3(tokens) /*|| analysis::stage4(tokens)
+    /*|| analysis::stage5(tokens) /*|| analysis::stage6(tokens) /*|| analysis::stage7(tokens)*/
         ;
 }
