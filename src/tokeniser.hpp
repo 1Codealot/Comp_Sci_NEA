@@ -89,12 +89,9 @@ namespace tokeniser // So thaat in future I can tell where functions come from.
             {
                 continue;
             }
-            // Using regex to replace leading and trailing spaces in a token
-            new_tokens.at(i) = std::regex_replace(new_tokens.at(i), std::regex("^\\s"), "");
-            new_tokens.at(i) = std::regex_replace(new_tokens.at(i), std::regex("\\s$"), "");
 
             // Delete blank tokens
-            if (new_tokens.at(i) == "")
+            if (new_tokens.at(i) == "" || new_tokens.at(i) == " ")
             {
                 new_tokens.erase(new_tokens.begin() + i);
                 i--;
