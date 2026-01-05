@@ -1,0 +1,9 @@
+// should say inbalanced nesting
+
+i = 5
+do 
+
+    if i MOD 2 ==0 then
+        print(str(i)\n)
+    endif
+    i = i-1

@@ -1,0 +1,7 @@
+// should say inbalanced nesting
+
+i = 0
+
+while i != 10
+    print("i is not 10\n")
+    i = i+1
