@@ -174,16 +174,16 @@ namespace analysis
             prev_prev_token = tokens.at(i - 2);
             if (current_token == "=" && tokens.at(i + 1) != "=")
             {
-                if (std::find(tokens.begin(), tokens.end(), prev_token) != tokens.end())
+                if (std::find(protected_identifers.begin(), protected_identifers.end(), prev_token) != protected_identifers.end())
                 {
                     has_error = true;
                     errors += "you cannot use " + prev_token + " as an identifier again.\n";
                     continue;
                 }
-                if (!(std::regex_match(prev_token, std::regex("[_[:alpha:]]w*"))))
+                if (!(std::regex_match(prev_token, std::regex("[_A-Za-z]\\w*"))))
                 {
                     has_error = true;
-                    errors += prev_token + " is not a valid identifier name";
+                    errors += prev_token + " is not a valid identifier name\n";
                     continue;
                 }
                 if (prev_prev_token == "const")
@@ -204,7 +204,7 @@ returns if any of the stages have errors because if there are syntax errors, we 
 */
 bool analyse(std::vector<std::string> tokens)
 {
-    return analysis::stage1(tokens) || analysis::stage2(tokens) /*|| analysis::stage3(tokens) /*|| analysis::stage4(tokens)
+    return analysis::stage1(tokens) || analysis::stage2(tokens) || analysis::stage3(tokens) /*|| analysis::stage4(tokens)
     /*|| analysis::stage5(tokens) /*|| analysis::stage6(tokens) /*|| analysis::stage7(tokens)*/
         ;
 }

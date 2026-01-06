@@ -1,0 +1,6 @@
+a = 5
+number = 22
+greeting = "Hello"
+const PI = 3.14159
+some_bool = true
+const _hidden_var = 67
