@@ -1,5 +1,19 @@
 #include <string>
 #include <vector>
+#include <algorithm>
+
+/*
+The list of identifiers that are not allowed to be used or reused.
+This is outside the functions that it is used in as we cannot have a function and variable have the exact same name.
+Due to how I have programmed this, this will recieve variable identifiers first which may make it confusing as to why
+it says that a variable already has the name even if the function is defined first.
+However, it should and will still error anyway.
+*/
+std::vector<std::string> protected_identifers =
+    {"AND", "OR", "NOT", "MOD", "DIV", "const", "global", "input", "print", "str", "int",
+     "float", "real", "bool", "for", "to", "step", "next", "while", "endwhile", "do", "until", "if", "then", "elseif", "else", "endif",
+     "switch", "case", "default", "endswitch", "ASC", "CHR", "open", "newFile", "array", "procedure", "endprocedure", "function",
+     "return", "endfunction", "random"};
 
 namespace analysis
 {
@@ -139,6 +153,45 @@ namespace analysis
             errors += "Inbalanced nesting\n";
         }
 
+        return has_error;
+    }
+
+    /*
+    Stage 3 of syntax analysis. This is where the transpiler checks that all variables are defined properly.
+    This includes checking if the identifier is allowed and that constants are not changed.
+    tokens = fully tokenised tokens
+    returns whether or not there is an error*/
+    bool stage3(std::vector<std::string> tokens)
+    {
+        bool has_error = false;
+        std::string current_token;
+        std::string prev_token;
+        std::string prev_prev_token;
+        for (size_t i = 2; i < tokens.size() - 1; i++)
+        {
+            current_token = tokens.at(i);
+            prev_token = tokens.at(i - 1);
+            prev_prev_token = tokens.at(i - 2);
+            if (current_token == "=" && tokens.at(i + 1) != "=")
+            {
+                if (std::find(tokens.begin(), tokens.end(), prev_token) != tokens.end())
+                {
+                    has_error = true;
+                    errors += "you cannot use " + prev_token + " as an identifier again.\n";
+                    continue;
+                }
+                if (!(std::regex_match(prev_token, std::regex("[_[:alpha:]]w*"))))
+                {
+                    has_error = true;
+                    errors += prev_token + " is not a valid identifier name";
+                    continue;
+                }
+                if (prev_prev_token == "const")
+                {
+                    protected_identifers.push_back(prev_token);
+                }
+            }
+        }
         return has_error;
     }
 
