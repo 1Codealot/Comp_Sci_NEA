@@ -1,1 +1,3 @@
+//should say you cannot use input as an identifier
+
 input = input("What is your name? ")

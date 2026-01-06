@@ -1,2 +1,4 @@
+//Should say can't use the big_num identifer again
+
 const big_num = 1000000000
 const big_num = 1000000001 // oops too small originally
