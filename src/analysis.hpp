@@ -196,6 +196,100 @@ namespace analysis
         return has_error;
     }
 
+    /*
+    Stage 4 of syntax analysis. This is where I check that all subprocedures are defined
+    correctly.
+    I will allow defining subprocedures within subprocedures as this is allowed in python.
+    As this is allowed in Python I will allow it to be transpiled.
+    tokens = fully tokenised tokens
+    recursed = flag to tell if this has been called recursively so I know to exit so the function doesn't go forever.
+    returns whether or not there is a error.
+    */
+    bool stage4(std::vector<std::string> tokens, bool recursed = false)
+    {
+        bool has_error = false;
+
+        for (size_t i = 0; i < tokens.size(); i++)
+        {
+            bool is_function;
+            if (tokens.at(i) == "function" || tokens.at(i) == "procedure")
+            {
+                is_function = tokens.at(i) == "function";
+
+                i++;
+
+                if (std::find(protected_identifers.begin(), protected_identifers.end(), tokens.at(i)) != protected_identifers.end())
+                {
+                    has_error = true;
+                    errors += "you cannot use " + tokens.at(i) + " as an identifier again.\n";
+                    continue;
+                }
+
+                if (!(std::regex_match(tokens.at(i), std::regex("\\D(\\w)*"))))
+                {
+                    has_error = true;
+                    errors += tokens.at(i) + "is not a valid subprocedure name.\n";
+                    continue;
+                }
+
+                if (is_function)
+                {
+                    int expected_returns = 1;
+                    while (tokens.at(i) != "endfunction")
+                    {
+                        if (tokens.at(i) == "return")
+                        {
+                            expected_returns--;
+                        }
+
+                        if (tokens.at(i) == "function" || tokens.at(i) == "procedure")
+                        {
+                            if (tokens.at(i) == "function")
+                            {
+                                expected_returns++;
+                            }
+                            has_error = stage4({tokens.begin() + i, tokens.end()}, true);
+                        }
+
+                        i++;
+                    }
+                    if (expected_returns != 0)
+                    {
+                        has_error = true;
+                        errors += "function found missing return statement\n";
+                    }
+                    if (recursed)
+                    {
+                        // Exiting before the recursion checks other functions so it doesnt go infinitly.
+                        return has_error;
+                    }
+                }
+                else
+                {
+                    while (tokens.at(i) != "endprocedure")
+                    {
+                        if (tokens.at(i) == "return")
+                        {
+                            has_error = true;
+                            errors += "Unexpected return found in a procedure\n";
+                        }
+                        if (tokens.at(i) == "function" || tokens.at(i) == "procedure")
+                        {
+                            has_error = stage4({tokens.begin() + i, tokens.end()}, true);
+                        }
+
+                        i++;
+                    }
+                    if (recursed)
+                    {
+                        // Exiting before the recursion checks other functions so it doesnt go infinitly.
+                        return has_error;
+                    }
+                }
+            }
+        }
+        return has_error;
+    }
 } // namespace analysis
 
 /*
@@ -205,7 +299,7 @@ returns if any of the stages have errors because if there are syntax errors, we 
 */
 bool analyse(std::vector<std::string> tokens)
 {
-    return analysis::stage1(tokens) || analysis::stage2(tokens) || analysis::stage3(tokens) /*|| analysis::stage4(tokens)
+    return analysis::stage1(tokens) || analysis::stage2(tokens) || analysis::stage3(tokens) || analysis::stage4(tokens)
     /*|| analysis::stage5(tokens) /*|| analysis::stage6(tokens) /*|| analysis::stage7(tokens)*/
         ;
 }
