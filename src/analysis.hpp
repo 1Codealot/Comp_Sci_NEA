@@ -232,6 +232,44 @@ namespace analysis
                     continue;
                 }
 
+                i++;
+
+                // check parameters
+                if (tokens.at(i) != "(")
+                {
+                    has_error = true;
+                    errors += "expected a '(' after subprocedure name\n";
+                }
+
+                int open_bracket_index = i;
+                while (tokens.at(i) != ")")
+                {
+                    if (i - open_bracket_index > 100)
+                    {
+                        has_error = true;
+                        errors += "Too many parameters found in a subprocedure definition\n";
+                    }
+
+                    i++;
+                    if (std::find(protected_identifers.begin(), protected_identifers.end(), tokens.at(i)) != protected_identifers.end())
+                    {
+                        has_error = true;
+                        errors += "you cannot use " + tokens.at(i) + " as a parameter identifier.\n";
+                    }
+                    if (!(std::regex_match(tokens.at(i), std::regex("\\D(\\w)*"))))
+                    {
+                        has_error = true;
+                        errors += tokens.at(i) + " is not a valid name for a parameter.\n";
+                    }
+
+                    i++;
+                    if (tokens.at(i) != "," && tokens.at(i) != ")")
+                    {
+                        has_error = true;
+                        errors += "expected ','. Found " + tokens.at(i);
+                    }
+                }
+
                 if (is_function)
                 {
                     int expected_returns = 1;
@@ -300,6 +338,6 @@ returns if any of the stages have errors because if there are syntax errors, we 
 bool analyse(std::vector<std::string> tokens)
 {
     return analysis::stage1(tokens) || analysis::stage2(tokens) || analysis::stage3(tokens) || analysis::stage4(tokens)
-    /*|| analysis::stage5(tokens) /*|| analysis::stage6(tokens) /*|| analysis::stage7(tokens)*/
+        /*|| analysis::stage5(tokens) /*|| analysis::stage6(tokens) /*|| analysis::stage7(tokens)*/
         ;
 }
