@@ -1,0 +1,23 @@
+// Should say I cannot use 'function' as a subprocedure name.
+
+function function()
+    print("This will fail\n")
+    return 0
+endfunction
+
+// Should say I cannot use 'procedure' as a subprocedure name.
+
+procedure procedure()
+    print("This will fail\n")
+endprocedure
+
+// should say that "2ndFunc" is not a valid name
+
+function 2ndFunc()
+    return 2
+endfunction
+
+// should say that "2ndProc" is not a valid name
+
+procedure 2ndProc()
+endprocedure

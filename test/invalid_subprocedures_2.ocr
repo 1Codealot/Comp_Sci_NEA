@@ -1,0 +1,9 @@
+// Should say expected a '(' after subprocedure name
+function noArgFunc
+    return 0
+endfunction
+
+// Should say expected a '(' after subprocedure name
+procedure noArgProc
+    print("Fails\n")
+endprocedure
