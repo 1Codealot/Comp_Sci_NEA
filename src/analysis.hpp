@@ -238,6 +238,7 @@ namespace analysis
                 {
                     has_error = true;
                     errors += "expected a '(' after subprocedure name\n";
+                    continue;
                 }
 
                 int open_bracket_index = i;
