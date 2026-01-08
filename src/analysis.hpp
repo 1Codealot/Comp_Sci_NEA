@@ -243,16 +243,31 @@ namespace analysis
                 int open_bracket_index = i;
                 while (tokens.at(i) != ")")
                 {
+                    // So that parameters can go over several lines
+                    if(tokens.at(i) == "\n"){
+                        i++;
+                    }
+
+                    if (i == tokens.size()-1)
+                    {
+                        has_error = true;
+                        // Yes, this will be somewhat tested for in stage1(), however this is here
+                        // so that the program doesn't crash.
+                        errors += "No ')' found when defining parameters";
+                        break;
+                    }
+                    
                     if (i - open_bracket_index > 100)
                     {
                         has_error = true;
-                        errors += "Too many parameters found in a subprocedure definition, or no ')' found when defining parameters.\n";
+                        errors += "Too many parameters found in a subprocedure definition.";
+                        break;
                     }
 
                     i++;
                     if (tokens.at(i) != ")")
                     {
-                        break;
+                        continue;
                     }
                     if (std::find(protected_identifers.begin(), protected_identifers.end(), tokens.at(i)) != protected_identifers.end())
                     {
