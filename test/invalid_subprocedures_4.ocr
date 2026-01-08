@@ -1,0 +1,17 @@
+// The missing ) gets caught by stage 1
+
+function func1(a, b
+    return a - b
+endfunction
+
+// should say no ')' found when defining parameters
+
+procedure proc1(c
+    print(c-5)
+endprocedure
+
+// The missing ( gets caught by stage 1
+
+procedure proc2 d)
+    print(d*12)
+endprocedure

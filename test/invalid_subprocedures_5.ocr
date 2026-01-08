@@ -1,0 +1,15 @@
+//Should say cannot define subprocedures within subprocedures
+function outer1()
+    procedure inner1()   
+        print("I am inside a function\n")
+    endprocedure
+    return 0
+endfunction
+
+//Should say cannot define subprocedures within subprocedures
+procedure outer2()
+    function inner2()
+        print("I am inside a procedure\n")
+        return 0
+    endfunction
+endprocedure
