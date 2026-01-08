@@ -174,7 +174,6 @@ namespace analysis
             prev_prev_token = tokens.at(i - 2);
             if (current_token == "=" && tokens.at(i + 1) != "=")
             {
-                std::cout << "Identifier = " << prev_token << "\n";
                 if (std::find(protected_identifers.begin(), protected_identifers.end(), prev_token) != protected_identifers.end())
                 {
                     has_error = true;
@@ -202,10 +201,9 @@ namespace analysis
     I will allow defining subprocedures within subprocedures as this is allowed in python.
     As this is allowed in Python I will allow it to be transpiled.
     tokens = fully tokenised tokens
-    recursed = flag to tell if this has been called recursively so I know to exit so the function doesn't go forever.
     returns whether or not there is a error.
     */
-    bool stage4(std::vector<std::string> tokens, bool recursed = false)
+    bool stage4(std::vector<std::string> tokens)
     {
         bool has_error = false;
 
@@ -251,6 +249,10 @@ namespace analysis
                     }
 
                     i++;
+                    if (tokens.at(i) != ")")
+                    {
+                        break;
+                    }
                     if (std::find(protected_identifers.begin(), protected_identifers.end(), tokens.at(i)) != protected_identifers.end())
                     {
                         has_error = true;
@@ -262,50 +264,45 @@ namespace analysis
                         errors += tokens.at(i) + " is not a valid name for a parameter.\n";
                     }
 
-                    i++;
                     if (tokens.at(i) != "," && tokens.at(i) != ")")
                     {
                         has_error = true;
                         errors += "expected ','. Found " + tokens.at(i);
                     }
+                    i++;
                 }
 
                 if (is_function)
                 {
-                    int expected_returns = 1;
+                    bool found_return = false;
                     while (tokens.at(i) != "endfunction")
                     {
+
                         if (tokens.at(i) == "return")
                         {
-                            expected_returns--;
+                            found_return = true;
                         }
+
 
                         if (tokens.at(i) == "function" || tokens.at(i) == "procedure")
                         {
-                            if (tokens.at(i) == "function")
-                            {
-                                expected_returns++;
-                            }
-                            has_error = stage4({tokens.begin() + i, tokens.end()}, true);
+                            has_error = true;
+                            errors += "You cannot define a subprocedure within a subprocedure.\n";
                         }
 
                         i++;
                     }
-                    if (expected_returns != 0)
+                    if (!found_return)
                     {
                         has_error = true;
                         errors += "function found missing return statement\n";
-                    }
-                    if (recursed)
-                    {
-                        // Exiting before the recursion checks other functions so it doesnt go infinitly.
-                        return has_error;
                     }
                 }
                 else
                 {
                     while (tokens.at(i) != "endprocedure")
                     {
+
                         if (tokens.at(i) == "return")
                         {
                             has_error = true;
@@ -313,15 +310,11 @@ namespace analysis
                         }
                         if (tokens.at(i) == "function" || tokens.at(i) == "procedure")
                         {
-                            has_error = stage4({tokens.begin() + i, tokens.end()}, true);
+                            has_error = true;
+                            errors += "You cannot define a subprocedure within a subprocedure.\n";
                         }
 
                         i++;
-                    }
-                    if (recursed)
-                    {
-                        // Exiting before the recursion checks other functions so it doesnt go infinitly.
-                        return has_error;
                     }
                 }
             }

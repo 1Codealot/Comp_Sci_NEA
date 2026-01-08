@@ -1,7 +1,6 @@
 function func1()
     return 1
 endfunction
-
 procedure greet1()
     name = input("What is your name? ")
     print("\nHello " + name + ".\n")
@@ -15,13 +14,13 @@ function avg4(n1,n2, n3, n4)
     return (n1+n2+n3+n4) / 4
 endfunction
 
-function outer1(i)
-    procedure inner1(j,k)
-    endprocedure
-    return true
-endfunction
 
-procedure outer2(a,b)
-    function inner2(c)
-    return false
-endprocedure
+
+
+
+
+
+
+
+
+
