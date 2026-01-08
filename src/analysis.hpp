@@ -198,8 +198,8 @@ namespace analysis
     /*
     Stage 4 of syntax analysis. This is where I check that all subprocedures are defined
     correctly.
-    I will allow defining subprocedures within subprocedures as this is allowed in python.
-    As this is allowed in Python I will allow it to be transpiled.
+    I was initially planning to allow subprocedures within sbporcedures, as Python does allow this.
+    However I could not get this to work.  
     tokens = fully tokenised tokens
     returns whether or not there is a error.
     */
