@@ -255,14 +255,14 @@ namespace analysis
                         has_error = true;
                         // Yes, this will be somewhat tested for in stage1(), however this is here
                         // so that the program doesn't crash.
-                        errors += "No ')' found when defining parameters";
+                        errors += "No ')' found when defining parameters\n";
                         break;
                     }
 
                     if (i - open_bracket_index > 100)
                     {
                         has_error = true;
-                        errors += "Too many parameters found in a subprocedure definition.";
+                        errors += "Too many parameters found in a subprocedure definition.\n";
                         break;
                     }
 
