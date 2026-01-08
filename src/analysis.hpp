@@ -199,7 +199,7 @@ namespace analysis
     Stage 4 of syntax analysis. This is where I check that all subprocedures are defined
     correctly.
     I was initially planning to allow subprocedures within sbporcedures, as Python does allow this.
-    However I could not get this to work.  
+    However I could not get this to work.
     tokens = fully tokenised tokens
     returns whether or not there is a error.
     */
@@ -244,11 +244,12 @@ namespace analysis
                 while (tokens.at(i) != ")")
                 {
                     // So that parameters can go over several lines
-                    if(tokens.at(i) == "\n"){
+                    if (tokens.at(i) == "\n")
+                    {
                         i++;
                     }
 
-                    if (i == tokens.size()-1)
+                    if (i == tokens.size() - 1)
                     {
                         has_error = true;
                         // Yes, this will be somewhat tested for in stage1(), however this is here
@@ -256,7 +257,7 @@ namespace analysis
                         errors += "No ')' found when defining parameters";
                         break;
                     }
-                    
+
                     if (i - open_bracket_index > 100)
                     {
                         has_error = true;
@@ -265,10 +266,15 @@ namespace analysis
                     }
 
                     i++;
-                    if (tokens.at(i) != ")")
+                    if (tokens.at(i) == "\n")
                     {
-                        continue;
+                        i++;
                     }
+                    if (tokens.at(i) == ")")
+                    {
+                        break;
+                    }
+
                     if (std::find(protected_identifers.begin(), protected_identifers.end(), tokens.at(i)) != protected_identifers.end())
                     {
                         has_error = true;
@@ -279,12 +285,21 @@ namespace analysis
                         has_error = true;
                         errors += tokens.at(i) + " is not a valid name for a parameter.\n";
                     }
+                    std::cout << "Added parameter " << tokens.at(i) << "\n";
+                    i++;
+                    if (tokens.at(i) == "\n")
+                    {
+                        i++;
+                    }
                     if (tokens.at(i) != "," && tokens.at(i) != ")")
                     {
                         has_error = true;
-                        errors += "expected ','. Found " + tokens.at(i);
+                        errors += "expected ','. Found " + tokens.at(i) + "\n";
                     }
-                    i++;
+                    else if (tokens.at(i) == ")")
+                    {
+                        break;
+                    }
                 }
 
                 if (is_function)
