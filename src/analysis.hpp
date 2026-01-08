@@ -216,6 +216,7 @@ namespace analysis
 
                 i++;
 
+                // Check that the name of the subprocedure is usable.
                 if (std::find(protected_identifers.begin(), protected_identifers.end(), tokens.at(i)) != protected_identifers.end())
                 {
                     has_error = true;
@@ -245,7 +246,7 @@ namespace analysis
                     if (i - open_bracket_index > 100)
                     {
                         has_error = true;
-                        errors += "Too many parameters found in a subprocedure definition\n";
+                        errors += "Too many parameters found in a subprocedure definition, or no ')' found when defining parameters.\n";
                     }
 
                     i++;
@@ -263,7 +264,6 @@ namespace analysis
                         has_error = true;
                         errors += tokens.at(i) + " is not a valid name for a parameter.\n";
                     }
-
                     if (tokens.at(i) != "," && tokens.at(i) != ")")
                     {
                         has_error = true;
@@ -274,6 +274,7 @@ namespace analysis
 
                 if (is_function)
                 {
+                    // Checking that there is a return statement in the function.
                     bool found_return = false;
                     while (tokens.at(i) != "endfunction")
                     {
@@ -282,7 +283,6 @@ namespace analysis
                         {
                             found_return = true;
                         }
-
 
                         if (tokens.at(i) == "function" || tokens.at(i) == "procedure")
                         {
