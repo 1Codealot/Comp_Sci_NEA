@@ -270,6 +270,7 @@ namespace analysis
                     {
                         i++;
                     }
+                    
                     if (tokens.at(i) == ")")
                     {
                         break;
@@ -285,12 +286,13 @@ namespace analysis
                         has_error = true;
                         errors += tokens.at(i) + " is not a valid name for a parameter.\n";
                     }
-                    std::cout << "Added parameter " << tokens.at(i) << "\n";
+
                     i++;
                     if (tokens.at(i) == "\n")
                     {
                         i++;
                     }
+
                     if (tokens.at(i) != "," && tokens.at(i) != ")")
                     {
                         has_error = true;
