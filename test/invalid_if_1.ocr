@@ -1,0 +1,3 @@
+if then
+    print("No condition\n")
+endif

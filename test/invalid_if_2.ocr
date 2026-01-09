@@ -1,0 +1,3 @@
+if true
+    print("No then\n")
+endif

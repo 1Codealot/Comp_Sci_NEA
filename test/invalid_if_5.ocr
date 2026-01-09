@@ -1,0 +1,8 @@
+a = 2
+
+if a MOD 3 == 0 then
+    print("a is divisible by 3\n")
+elseif a MOD 3 == 1
+    // No then
+    print("a has a remainder of 1 when divided by 3\n")
+endif
