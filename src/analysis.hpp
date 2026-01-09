@@ -271,7 +271,7 @@ namespace analysis
                     {
                         i++;
                     }
-                    
+
                     if (tokens.at(i) == ")")
                     {
                         break;
@@ -354,6 +354,88 @@ namespace analysis
         }
         return has_error;
     }
+
+    /*
+    Stage 5 of syntax analysis. This is where I check that all if/elseif/else blocks are
+    written correctly.
+    tokens = fully tokenised tokens
+    returns whether or not there is an error.
+    */
+    bool stage5(std::vector<std::string> tokens)
+    {
+        bool has_error = false;
+
+        for (size_t i = 0; i < tokens.size(); i++)
+        {
+            if (tokens.at(i) == "if")
+            {
+                i++;
+                if (tokens.at(i) == "then")
+                {
+                    has_error = true;
+                    errors += "if statement found with no condition\n";
+                }
+
+                while (tokens.at(i) != "then" || tokens.at(i) != "\n")
+                {
+                    if (tokens.at(i) == "\n")
+                    {
+                        errors += "No 'then' found when defining if statement.\n";
+                        break;
+                    }
+                    else if (tokens.at(i) == "then")
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        i++;
+                    }
+                }
+                while (tokens.at(i) != "endif")
+                {
+                    if (i == tokens.size() - 1)
+                    {
+                        has_error = true;
+                        errors += "If statement found without endif\n";
+                        break;
+                    }
+
+                    if (tokens.at(i) == "if")
+                    {
+                        // TODO: Add the ability for nested if.
+                    }
+                    if (tokens.at(i) == "elseif")
+                    {
+                        i++;
+                        if (tokens.at(i) == "then")
+                        {
+                            has_error = true;
+                            errors += "elseif found without condition.\n";
+                        }
+                        while (tokens.at(i) != "then" || tokens.at(i) != "\n")
+                        {
+                            if (tokens.at(i) == "\n")
+                            {
+                                errors += "No 'then' found when defining elseif statement.\n";
+                                break;
+                            }
+                            else if (tokens.at(i) == "then")
+                            {
+                                break;
+                            }
+                            else
+                            {
+                                i++;
+                            }
+                        }
+                    }
+                    i++;
+                }
+            }
+        }
+        return has_error;
+    }
 } // namespace analysis
 
 /*
@@ -363,7 +445,6 @@ returns if any of the stages have errors because if there are syntax errors, we 
 */
 bool analyse(std::vector<std::string> tokens)
 {
-    return analysis::stage1(tokens) || analysis::stage2(tokens) || analysis::stage3(tokens) || analysis::stage4(tokens)
-        /*|| analysis::stage5(tokens) /*|| analysis::stage6(tokens) /*|| analysis::stage7(tokens)*/
+    return analysis::stage1(tokens) || analysis::stage2(tokens) || analysis::stage3(tokens) || analysis::stage4(tokens) || analysis::stage5(tokens) /*|| analysis::stage6(tokens) /*|| analysis::stage7(tokens)*/
         ;
 }
