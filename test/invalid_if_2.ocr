@@ -1,3 +1,5 @@
+// Should say not then found
+
 if true
     print("No then\n")
 endif

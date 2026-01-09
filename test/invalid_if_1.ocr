@@ -1,3 +1,5 @@
+// Should say no condition found
+
 if then
     print("No condition\n")
 endif

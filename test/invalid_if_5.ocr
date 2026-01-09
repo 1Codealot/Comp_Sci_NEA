@@ -1,3 +1,5 @@
+// should say no then found when defining elseif statement
+
 a = 2
 
 if a MOD 3 == 0 then
