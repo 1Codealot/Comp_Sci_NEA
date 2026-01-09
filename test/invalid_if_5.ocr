@@ -5,4 +5,6 @@ if a MOD 3 == 0 then
 elseif a MOD 3 == 1
     // No then
     print("a has a remainder of 1 when divided by 3\n")
+else
+    print("a has a remainder of 2 when divided by 3\n")
 endif
