@@ -407,7 +407,6 @@ namespace analysis
                     // For nested if statements
                     if (tokens.at(i) == "if")
                     {
-                        std::cout << "Here\n";
                         endifs_needed++;
                         i++;
                         if (tokens.at(i) == "then")

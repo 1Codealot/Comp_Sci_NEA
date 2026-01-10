@@ -1,0 +1,14 @@
+// Should say no then is found
+
+a = 1
+b = 2
+
+if a == 1 then
+    if b == 1
+        print("a and b are both 1\n")
+    else
+        print("a is 1 but b isn't\n")
+    endif
+else
+    print("a is not 1\n")
+endif
