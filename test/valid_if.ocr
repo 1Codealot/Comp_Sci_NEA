@@ -18,10 +18,12 @@ else
     print("i has remainder 2 when divided by 3\n")
 endif
 
-/* Commented out for now but should be successful when finished.
+
 if i MOD 5 == 0 then
-    if i MOD 7 == 0 then
+    if i MOD 7 == 0  then
         print("i is divisible by 5 and 7\n")
+    elseif i MOD 7 == 6 OR i MOD 7 == 1 then
+        print("i is divisible by 5 and almost 7\n")
     else
         print("i is divisible by 5 but not 7\n")
     endif
@@ -29,4 +31,4 @@ elseif i MOD 7 == 0 then
     print("i is divisible by 7 but not 5\n")
 else
     print("i is not divisible by 5 or 7\n")
-*/
+endif

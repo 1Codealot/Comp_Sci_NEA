@@ -364,11 +364,13 @@ namespace analysis
     bool stage5(std::vector<std::string> tokens)
     {
         bool has_error = false;
+        int endifs_needed = 0;
 
         for (size_t i = 0; i < tokens.size(); i++)
         {
             if (tokens.at(i) == "if")
             {
+                endifs_needed++;
                 i++;
                 if (tokens.at(i) == "then")
                 {
@@ -380,6 +382,7 @@ namespace analysis
                 {
                     if (tokens.at(i) == "\n")
                     {
+                        has_error = true;
                         errors += "No 'then' found when defining if statement.\n";
                         break;
                     }
@@ -392,7 +395,7 @@ namespace analysis
                         i++;
                     }
                 }
-                while (tokens.at(i) != "endif")
+                while (endifs_needed != 0)
                 {
                     if (i == tokens.size() - 1)
                     {
@@ -401,10 +404,36 @@ namespace analysis
                         break;
                     }
 
+                    // For nested if statements
                     if (tokens.at(i) == "if")
                     {
-                        // TODO: Add the ability for nested if.
+                        std::cout << "Here\n";
+                        endifs_needed++;
+                        i++;
+                        if (tokens.at(i) == "then")
+                        {
+                            has_error = true;
+                            errors += "if statement found with no condition\n";
+                        }
+                        while (tokens.at(i) != "then" || tokens.at(i) != "\n")
+                        {
+                            if (tokens.at(i) == "\n")
+                            {
+                                has_error = true;
+                                errors += "No 'then' found when defining if statement.\n";
+                                break;
+                            }
+                            else if (tokens.at(i) == "then")
+                            {
+                                break;
+                            }
+                            else
+                            {
+                                i++;
+                            }
+                        }
                     }
+
                     if (tokens.at(i) == "elseif")
                     {
                         i++;
@@ -430,6 +459,11 @@ namespace analysis
                             }
                         }
                     }
+                    if (tokens.at(i) == "endif")
+                    {
+                        endifs_needed--;
+                    }
+
                     i++;
                 }
             }
