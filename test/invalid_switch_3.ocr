@@ -1,0 +1,8 @@
+// Should say default found with no switch preceding
+
+day = input("What day of the week is it?\n").upper.left(3)
+
+swotch day
+    default:
+        print("It is a day of the week (not weekday...)\n")
+endswitch

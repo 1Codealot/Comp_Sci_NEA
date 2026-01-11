@@ -1,0 +1,12 @@
+// Should say expected ':' found default.
+
+day = input("What day of the week is it?\n").upper.left(3)
+
+switch day:
+    case "SAT":
+        print("It is a weekend\n")
+    case "SUN"
+        print("It is a weekend\n")
+    default:
+        print("It is a weekday\n")
+endswitch

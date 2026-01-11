@@ -1,0 +1,12 @@
+// should say found case after default.
+
+day = input("What day of the week is it?\n").upper.left(3)
+
+switch day:
+    default:
+        print("It is a weekday\n")
+    case "SAT":
+        print("It is a weekend\n")
+    case "SUN":
+        print("It is a weekend\n")
+endswitch
