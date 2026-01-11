@@ -137,11 +137,13 @@ namespace analysis
         for (size_t i = 0; i < tokens.size(); i++)
         {
             std::string current_token = tokens.at(i);
-            if (current_token == "if" || current_token == "while" || current_token == "for" || current_token == "do")
+            if (current_token == "if" || current_token == "while" || current_token == "for" || current_token == "do" || 
+                current_token == "switch" || current_token == "function"  || current_token == "procedure" || current_token == "for")
             {
                 nest_count++;
             }
-            if (current_token == "endif" || current_token == "endwhile" || current_token == "next" || current_token == "until")
+            if (current_token == "endif" || current_token == "endwhile" || current_token == "next" || current_token == "until" || 
+                current_token == "endswitch" || current_token == "endfunction" || current_token == "endprocedure" || current_token == "next")
             {
                 nest_count--;
             }
@@ -481,6 +483,13 @@ namespace analysis
         bool has_error = false;
         for (size_t i = 0; i < tokens.size(); i++)
         {
+
+            if(i == tokens.size() - 1){
+                has_error = true;
+                errors += "switch statement found with no endswitch.";
+                break;
+            }
+
             if (tokens.at(i) == "case")
             {
                 has_error = true;
