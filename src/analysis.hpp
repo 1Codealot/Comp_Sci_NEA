@@ -137,12 +137,12 @@ namespace analysis
         for (size_t i = 0; i < tokens.size(); i++)
         {
             std::string current_token = tokens.at(i);
-            if (current_token == "if" || current_token == "while" || current_token == "for" || current_token == "do" || 
-                current_token == "switch" || current_token == "function"  || current_token == "procedure" || current_token == "for")
+            if (current_token == "if" || current_token == "while" || current_token == "for" || current_token == "do" ||
+                current_token == "switch" || current_token == "function" || current_token == "procedure" || current_token == "for")
             {
                 nest_count++;
             }
-            if (current_token == "endif" || current_token == "endwhile" || current_token == "next" || current_token == "until" || 
+            if (current_token == "endif" || current_token == "endwhile" || current_token == "next" || current_token == "until" ||
                 current_token == "endswitch" || current_token == "endfunction" || current_token == "endprocedure" || current_token == "next")
             {
                 nest_count--;
@@ -484,7 +484,8 @@ namespace analysis
         for (size_t i = 0; i < tokens.size(); i++)
         {
 
-            if(i == tokens.size() - 1){
+            if (i == tokens.size() - 1)
+            {
                 has_error = true;
                 errors += "switch statement found with no endswitch.";
                 break;
@@ -585,6 +586,13 @@ returns if any of the stages have errors because if there are syntax errors, we 
 */
 bool analyse(std::vector<std::string> tokens)
 {
-    return analysis::stage1(tokens) || analysis::stage2(tokens) || analysis::stage3(tokens) || analysis::stage4(tokens) || analysis::stage5(tokens) || analysis::stage6(tokens) /*|| analysis::stage7(tokens)*/
-        ;
+    bool result = false;
+    result = result | analysis::stage1(tokens);
+    result = result | analysis::stage2(tokens);
+    result = result | analysis::stage3(tokens);
+    result = result | analysis::stage4(tokens);
+    result = result | analysis::stage5(tokens);
+    result = result | analysis::stage6(tokens);
+    /*   result = result | analysis::stage7(tokens);*/
+    return result;
 }
