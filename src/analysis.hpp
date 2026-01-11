@@ -469,6 +469,104 @@ namespace analysis
         }
         return has_error;
     }
+
+    /*
+    Stage 6 of syntax analysis. This is where I check that all switch/case blocks are
+    written correctly.
+    tokens = fully tokenised tokens
+    returns whether or not there is an error.
+    */
+    bool stage6(std::vector<std::string> tokens)
+    {
+        bool has_error = false;
+        for (size_t i = 0; i < tokens.size(); i++)
+        {
+            if (tokens.at(i) == "case")
+            {
+                has_error = true;
+                errors += "case found without switch statement preceding it\n";
+            }
+
+            if (tokens.at(i) == "default")
+            {
+                has_error = true;
+                errors += "default found without switch statement preceding it\n";
+            }
+
+            bool found_default = false;
+            if (tokens.at(i) == "switch")
+            {
+                i++;
+                if (tokens.at(i) == ":")
+                {
+                    has_error = true;
+                    errors += "expected an expression after 'switch'; found ':'\n";
+                }
+
+                while (tokens.at(i) != ":")
+                {
+                    i++;
+                    if (tokens.at(i) == "case" || tokens.at(i) == "default" || tokens.at(i) == "endswitch")
+                    {
+                        has_error = true;
+                        errors += "expected : after switch statement, found " + tokens.at(i) + "\n";
+                        break;
+                    }
+                }
+
+                while (tokens.at(i) != "endswitch")
+                {
+                    i++;
+                    if (tokens.at(i) == "case")
+                    {
+                        if (found_default)
+                        {
+                            has_error = true;
+                            errors += "case statement found after default\n";
+                        }
+
+                        i++;
+                        if (tokens.at(i) == ":")
+                        {
+                            has_error = true;
+                            errors += "case statement found with no condition after\n";
+                        }
+
+                        while (tokens.at(i) != ":")
+                        {
+                            i++;
+                            if (tokens.at(i) == "case" || tokens.at(i) == "default" || tokens.at(i) == "endswitch")
+                            {
+                                has_error = true;
+                                errors += "expected : after case statement, found " + tokens.at(i) + "\n";
+                                break;
+                            }
+                        }
+                    }
+                    if (tokens.at(i) == "default")
+                    {
+                        if (found_default)
+                        {
+                            has_error = true;
+                            errors += "More than one default found.\n";
+                        }
+
+                        found_default = true;
+                        i++;
+
+                        if (tokens.at(i) != ":")
+                        {
+                            has_error = true;
+                            errors += "Expected ':' after default; found " + tokens.at(i) + "\n";
+                        }
+                    }
+                }
+            }
+        }
+
+        return has_error;
+    }
+
 } // namespace analysis
 
 /*
@@ -478,6 +576,6 @@ returns if any of the stages have errors because if there are syntax errors, we 
 */
 bool analyse(std::vector<std::string> tokens)
 {
-    return analysis::stage1(tokens) || analysis::stage2(tokens) || analysis::stage3(tokens) || analysis::stage4(tokens) || analysis::stage5(tokens) /*|| analysis::stage6(tokens) /*|| analysis::stage7(tokens)*/
+    return analysis::stage1(tokens) || analysis::stage2(tokens) || analysis::stage3(tokens) || analysis::stage4(tokens) || analysis::stage5(tokens) || analysis::stage6(tokens) /*|| analysis::stage7(tokens)*/
         ;
 }
