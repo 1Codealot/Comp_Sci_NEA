@@ -483,14 +483,6 @@ namespace analysis
         bool has_error = false;
         for (size_t i = 0; i < tokens.size(); i++)
         {
-
-            if (i == tokens.size() - 1)
-            {
-                has_error = true;
-                errors += "switch statement found with no endswitch.";
-                break;
-            }
-
             if (tokens.at(i) == "case")
             {
                 has_error = true;
@@ -526,7 +518,14 @@ namespace analysis
 
                 while (tokens.at(i) != "endswitch")
                 {
+                    if (i == tokens.size() - 1)
+                    {
+                        has_error = true;
+                        errors += "switch statement found with no endswitch.";
+                        break;
+                    }
                     i++;
+
                     if (tokens.at(i) == "case")
                     {
                         if (found_default)
