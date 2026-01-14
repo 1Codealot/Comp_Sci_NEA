@@ -576,6 +576,43 @@ namespace analysis
         return has_error;
     }
 
+    /*
+    Stage 7 of syntax analysis. This is where I check that all while and do-until blocks are
+    written correctly.
+    tokens = fully tokenised tokens
+    returns whether or not there is an error.
+    */
+    bool stage7(std::vector<std::string> tokens)
+    {
+        bool has_error = false;
+
+        for (size_t i = 0; i < tokens.size(); i++)
+        {
+            // While loop logic
+            if (tokens.at(i) == "endwhile")
+            {
+                has_error = true;
+                errors += "endwhile found without matching while.\n";
+            }
+
+            if (tokens.at(i) == "while")
+            {
+                while (tokens.at(i) != "endwhile")
+                {
+                    i++;
+                    if (i == tokens.size() - 1)
+                    {
+                        has_error = true;
+                        errors += "while loop with no endwhile found\n";
+                    }
+                }
+            }
+
+            //TODO: Do-until loop logic.
+        }
+
+        return has_error;
+    }
 } // namespace analysis
 
 /*
@@ -592,6 +629,7 @@ bool analyse(std::vector<std::string> tokens)
     result = result | analysis::stage4(tokens);
     result = result | analysis::stage5(tokens);
     result = result | analysis::stage6(tokens);
-    /*   result = result | analysis::stage7(tokens);*/
+    result = result | analysis::stage7(tokens);
+    /*   result = result | analysis::stage8(tokens);*/
     return result;
 }
