@@ -604,11 +604,44 @@ namespace analysis
                     {
                         has_error = true;
                         errors += "while loop with no endwhile found\n";
+                        break;
                     }
                 }
             }
 
-            //TODO: Do-until loop logic.
+            // Do-until loop logic.
+            if (tokens.at(i) == "until")
+            {
+                has_error = true;
+                errors += "until found without matching do.\n";
+            }
+
+            if (tokens.at(i) == "do")
+            {
+                i++;
+                if (tokens.at(i) != "\n")
+                {
+                    has_error = true;
+                    errors += "expected a newline after do statement, found" + tokens.at(i) + "\n";
+                }
+                while (tokens.at(i) != "until")
+                {
+                    i++;
+                    if (i == tokens.size() - 1)
+                    {
+                        has_error = true;
+                        errors += "do block found without ending until statement\n";
+                        break;
+                    }
+                }
+
+                i++;
+                if (tokens.at(i) == "\n")
+                {
+                    has_error = true;
+                    errors += "Expected a statement after until, but found a newline instead.\n";
+                }
+            }
         }
 
         return has_error;
