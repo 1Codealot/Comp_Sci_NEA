@@ -1,0 +1,13 @@
+// Should say until found without do.
+
+a = 5
+while a != 0 
+    print("a = " + str(a) + "\n")
+    a = a-1
+endwhile
+
+b = int(input("Enter a number: "))
+doo
+    print("b = " + str(b) + "\n")
+    b = b-1
+until b == 0
