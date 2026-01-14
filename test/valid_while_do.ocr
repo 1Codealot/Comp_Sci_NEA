@@ -5,10 +5,8 @@ while a != 0
     a = a-1
 endwhile
 
-/*
 b = int(input("Enter a number: "))
 do
     print("b = " + str(b) + "\n")
     b = b-1
 until b == 0
-*/
