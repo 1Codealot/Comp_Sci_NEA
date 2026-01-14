@@ -627,7 +627,7 @@ namespace analysis
                 while (tokens.at(i) != "until")
                 {
                     i++;
-                    if (i == tokens.size() - 1)
+                    if (i == tokens.size() - 2)
                     {
                         has_error = true;
                         errors += "do block found without ending until statement\n";
