@@ -1,6 +1,7 @@
 #include <string>
 #include <vector>
 #include <algorithm>
+#include <deque> // using this as a stack
 
 /*
 The list of identifiers that are not allowed to be used or reused.
@@ -646,6 +647,98 @@ namespace analysis
 
         return has_error;
     }
+
+    /*
+    Stage 8 of syntax analysis. This is where I check that all for loop blocks are
+    written correctly.
+    tokens = fully tokenised tokens
+    returns whether or not there is an error.
+    */
+    bool stage8(std::vector<std::string> tokens)
+    {
+        bool has_error = false;
+
+        /*
+        This is a container of type dequeue (double ended queue) which I will use as
+        a stack by only using the `dequeue::push_back` and `dequeue::pop_back` as there is
+        no stack type inplemented into the C++ standard library.
+        */
+        std::deque<std::string> iterator_identifiers_stack;
+
+        for (size_t i = 0; i < tokens.size(); i++)
+        {
+            if (tokens.at(i) == "to" || tokens.at(i) == "step" || tokens.at(i) == "next")
+            {
+                has_error = true;
+                errors += "found " + tokens.at(i) + " before for.\n";
+            }
+
+        for_checker:
+        {
+            if (tokens.at(i) == "for")
+            {
+                i++;
+                if (!(std::regex_match(tokens.at(i), std::regex("\\D(\\w)*"))))
+                {
+                    has_error = true;
+                    errors += "invalid identifier for itereator found: " + tokens.at(i) + "\n";
+                }
+
+                iterator_identifiers_stack.push_back(tokens.at(i));
+
+                i++;
+                if (tokens.at(i) != "=")
+                {
+                    has_error = true;
+                    errors += "expected '=', found " + tokens.at(i) + "\n";
+                }
+
+                // Interesting way of essentially making a while loop, while also iterating i
+                for (; tokens.at(i) != "to"; ++i)
+                {
+                    if (i == tokens.size() - 2)
+                    {
+                        has_error = true;
+                        errors += "no 'to' found after for statement\n";
+                        break;
+                    }
+
+                    if (tokens.at(i) == "step")
+                    {
+                        has_error = true;
+                        errors += "found 'step' before finding 'to'\n";
+                        break;
+                    }
+                }
+
+                for (; tokens.at(i) != "next"; ++i)
+                {
+                    if (tokens.at(i) == "for")
+                    {
+                        goto for_checker;
+                    }
+
+                    if (i == tokens.size() - 1)
+                    {
+                        has_error = true;
+                        errors += "for loop found with no 'next'\n";
+                        break;
+                    }
+                }
+                i++;
+                if (tokens.at(i) != iterator_identifiers_stack.back())
+                {
+                    has_error = true;
+                    errors += "identifier " + tokens.at(i) + " does not match expected identifier "
+                     + iterator_identifiers_stack.back() + "\n";
+                }
+            }
+        }
+        }
+
+        return has_error;
+    }
+
 } // namespace analysis
 
 /*
@@ -663,6 +756,6 @@ bool analyse(std::vector<std::string> tokens)
     result = result | analysis::stage5(tokens);
     result = result | analysis::stage6(tokens);
     result = result | analysis::stage7(tokens);
-    /*   result = result | analysis::stage8(tokens);*/
+    result = result | analysis::stage8(tokens);
     return result;
 }
