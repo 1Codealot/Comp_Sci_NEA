@@ -729,8 +729,7 @@ namespace analysis
                 if (tokens.at(i) != iterator_identifiers_stack.back())
                 {
                     has_error = true;
-                    errors += "identifier " + tokens.at(i) + " does not match expected identifier "
-                     + iterator_identifiers_stack.back() + "\n";
+                    errors += "identifier " + tokens.at(i) + " does not match expected identifier " + iterator_identifiers_stack.back() + "\n";
                 }
             }
         }
