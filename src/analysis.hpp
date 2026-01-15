@@ -667,6 +667,7 @@ namespace analysis
 
         for (size_t i = 0; i < tokens.size(); i++)
         {
+            std::cout << i << "\n";
             if (tokens.at(i) == "to" || tokens.at(i) == "step" || tokens.at(i) == "next")
             {
                 has_error = true;
@@ -711,30 +712,36 @@ namespace analysis
                     }
                 }
 
-                for (; tokens.at(i) != "next"; ++i)
+                for (; iterator_identifiers_stack.size() != 0; ++i)
                 {
                     if (tokens.at(i) == "for")
                     {
                         goto for_checker;
                     }
 
-                    if (i == tokens.size() - 1)
+                    else if (i == tokens.size() - 1)
                     {
                         has_error = true;
                         errors += "for loop found with no 'next'\n";
                         break;
                     }
-                }
-                i++;
-                if (tokens.at(i) != iterator_identifiers_stack.back())
-                {
-                    has_error = true;
-                    errors += "identifier " + tokens.at(i) + " does not match expected identifier " + iterator_identifiers_stack.back() + "\n";
+                    if (tokens.at(i) == "next")
+                    {
+                        i++;
+                        if (tokens.at(i) != iterator_identifiers_stack.back())
+                        {
+                            has_error = true;
+                            errors += "identifier " + tokens.at(i) + " does not match expected identifier " + iterator_identifiers_stack.back() + "\n";
+                        }
+                        else
+                        {
+                            iterator_identifiers_stack.pop_back();
+                        }
+                    }
                 }
             }
         }
         }
-
         return has_error;
     }
 
