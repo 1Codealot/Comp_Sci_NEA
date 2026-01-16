@@ -667,7 +667,6 @@ namespace analysis
 
         for (size_t i = 0; i < tokens.size(); i++)
         {
-            std::cout << i << "\n";
             if (tokens.at(i) == "to" || tokens.at(i) == "step" || tokens.at(i) == "next")
             {
                 has_error = true;
