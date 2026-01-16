@@ -1,4 +1,6 @@
-for i = 0 to 5
+// Should say invalid iterator identifier found.
+
+for i= 0 to 5
     print("Hello world\n")
 next i
 
@@ -9,8 +11,8 @@ for i = 2 to 100 step 2
 next i
 
 for m =1 to 5
-    for n= 0 to m
+    for * = 0 to m
         print("*")
-    next n
+    next *
     print("\n")
 next m

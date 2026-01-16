@@ -1,4 +1,6 @@
-for i = 0 to 5
+// Should say no 'to' found after for.
+
+for i = 0 ot 5
     print("Hello world\n")
 next i
 
@@ -11,6 +13,6 @@ next i
 for m =1 to 5
     for n= 0 to m
         print("*")
-    next n
+    next n 
     print("\n")
 next m

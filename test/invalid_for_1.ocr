@@ -1,10 +1,12 @@
+// Should say to, step and next found without for.
+
 for i = 0 to 5
     print("Hello world\n")
 next i
 
 print("Even numbers to 100\n")
 
-for i = 2 to 100 step 2
+fro i = 2 to 100 step 2
     print(str(i) + " ")
 next i
 

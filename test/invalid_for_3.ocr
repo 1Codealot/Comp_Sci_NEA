@@ -1,6 +1,8 @@
-for i = 0 to 5
+// Should say invalid iterator identifier found.
+
+for 1stiterator = 0 to 5
     print("Hello world\n")
-next i
+next 1stiterator
 
 print("Even numbers to 100\n")
 
