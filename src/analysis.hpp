@@ -702,7 +702,7 @@ namespace analysis
                 // Interesting way of essentially making a while loop, while also iterating i
                 for (; tokens.at(i) != "to"; ++i)
                 {
-                    if (i == tokens.size() - 2)
+                    if (i == tokens.size() - 2 || tokens.at(i) == "next")
                     {
                         has_error = true;
                         errors += "no 'to' found after for statement\n";
