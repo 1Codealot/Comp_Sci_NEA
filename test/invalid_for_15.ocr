@@ -1,0 +1,18 @@
+// Should say cannot use print as an identifer for the iterator.
+
+for print = 0 to 5
+    print("Hello world\n")
+next print
+
+print("Even numbers to 100\n")
+
+for i = 2 to 100 step 2
+    print(str(i) + " ")
+next i
+
+for m =1 to 5
+    for n= 0 to m
+        print("*")
+    next n
+    print("\n")
+next m

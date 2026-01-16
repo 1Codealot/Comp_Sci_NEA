@@ -1,0 +1,20 @@
+// Should say cannot use q as an identifer for the iterator.
+
+const q = 100
+
+for q = 0 to 5
+    print("Hello world\n")
+next q
+
+print("Even numbers to 100\n")
+
+for i = 2 to 100 step 2
+    print(str(i) + " ")
+next i
+
+for m =1 to 5
+    for n= 0 to m
+        print("*")
+    next n
+    print("\n")
+next m

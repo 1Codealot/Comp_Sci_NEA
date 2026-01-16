@@ -183,7 +183,7 @@ namespace analysis
                     errors += "you cannot use " + prev_token + " as an identifier again.\n";
                     continue;
                 }
-                if (!(std::regex_match(prev_token, std::regex("\\D(\\w)*"))))
+                if (!(std::regex_match(prev_token, std::regex("[A-Za-z_](\\w)*"))))
                 {
                     has_error = true;
                     errors += prev_token + " is not a valid identifier name\n";
@@ -227,7 +227,7 @@ namespace analysis
                     continue;
                 }
 
-                if (!(std::regex_match(tokens.at(i), std::regex("\\D(\\w)*"))))
+                if (!(std::regex_match(tokens.at(i), std::regex("[A-Za-z_](\\w)*"))))
                 {
                     has_error = true;
                     errors += tokens.at(i) + "is not a valid subprocedure name.\n";
@@ -285,7 +285,7 @@ namespace analysis
                         has_error = true;
                         errors += "you cannot use " + tokens.at(i) + " as a parameter identifier.\n";
                     }
-                    if (!(std::regex_match(tokens.at(i), std::regex("\\D(\\w)*"))))
+                    if (!(std::regex_match(tokens.at(i), std::regex("[A-Za-z_](\\w)*"))))
                     {
                         has_error = true;
                         errors += tokens.at(i) + " is not a valid name for a parameter.\n";
@@ -679,10 +679,16 @@ namespace analysis
             if (tokens.at(i) == "for")
             {
                 i++;
-                if (!(std::regex_match(tokens.at(i), std::regex("\\D(\\w)*"))))
+                if (!(std::regex_match(tokens.at(i), std::regex("[A-Za-z_](\\w)*"))))
                 {
                     has_error = true;
                     errors += "invalid identifier for itereator found: " + tokens.at(i) + "\n";
+                }
+
+                if (std::find(protected_identifers.begin(), protected_identifers.end(), tokens.at(i)) != protected_identifers.end())
+                {
+                    has_error = true;
+                    errors += "you cannot use " + tokens.at(i) + " as an iterator identifier.\n";
                 }
 
                 iterator_identifiers_stack.push_back(tokens.at(i));
