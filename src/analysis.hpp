@@ -759,6 +759,8 @@ returns if any of the stages have errors because if there are syntax errors, we 
 */
 bool analyse(std::vector<std::string> tokens)
 {
+    analysis::errors = "\n";
+
     bool result = false;
     result = result | analysis::stage1(tokens);
     result = result | analysis::stage2(tokens);
