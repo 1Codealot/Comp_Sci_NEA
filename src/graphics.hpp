@@ -4,11 +4,13 @@
 #define RAYGUI_IMPLEMENTATION
 #include "../include/raylib/raygui/include/raygui.h"
 
+Font jetbrainsMono;
 void startWindow()
 {
     // Initialises the window.
     InitWindow(950, 950, "OCR Reference Language Transpiler");
     SetTargetFPS(60);
+    jetbrainsMono = LoadFontEx("font/JetBrainsMono-Bold.ttf", 15, 0, 250);
 }
 
 // Class definition for buttons
@@ -68,14 +70,14 @@ text = The text to be displayed.
 */
 void scrollable_text_box(Rectangle rect, std::string text)
 {
-    const int scroll_speed = 15;
-    const int char_size = 15;
-    const int buffer = 7; // roughly char_size / 2
+    const int char_height = 15;
+    const int scroll_speed = char_height;
+    const int char_width = 8; // roughly char_height/2
     int chars_across = 0;
     int lines_down = 0;
 
     // Draws the background.
-    DrawRectangle(rect.x, rect.y, rect.width, rect.height + buffer, GRAY);
+    DrawRectangle(rect.x, rect.y, rect.width, rect.height + char_width, GRAY);
 
     for (char c : text)
     { // The text renderer will not do new lines correctly, so I must correct for that here.
@@ -87,20 +89,20 @@ void scrollable_text_box(Rectangle rect, std::string text)
         }
 
         // Character (not word) wrapping. I.E. if a letter would go out the bounding area, move it to a new line
-        if ((chars_across * char_size) + rect.x > rect.x + (rect.width - char_size))
+        if ((chars_across * char_width) + rect.x >= rect.x + (rect.width - char_width))
         {
             lines_down++;
             chars_across = 0;
         }
 
         // Check that the chars are in y range includeing scroll.
-        if (rect.y + (lines_down * char_size) + (scroll_offset) < rect.y + rect.height && rect.y + (lines_down * char_size) + (scroll_offset) > rect.y)
+        if (rect.y + (lines_down * char_height) + (scroll_offset) < rect.y + rect.height && rect.y + (lines_down * char_height) + (scroll_offset) > rect.y)
         {
-            DrawTextCodepoint(GetFontDefault(), c, {buffer + (chars_across * char_size) + rect.x, rect.y + scroll_offset + (lines_down * char_size) - buffer}, char_size, BLACK);
+            DrawTextCodepoint(jetbrainsMono, c, {(chars_across * char_width) + rect.x + 3, rect.y + scroll_offset + (lines_down * char_height) - char_height}, char_height, BLACK);
         }
         chars_across++;
     }
 
     lines_down -= 2;
-    scroll_offset = std::max(-lines_down * char_size, std::min(char_size, (scroll_offset + (int)(GetMouseWheelMove() * scroll_speed))));
+    scroll_offset = std::max(-lines_down * char_height, std::min(char_height, (scroll_offset + (int)(GetMouseWheelMove() * scroll_speed))));
 }
