@@ -77,8 +77,6 @@ void scrollable_text_box(Rectangle rect, std::string text)
     // Draws the background.
     DrawRectangle(rect.x, rect.y, rect.width, rect.height + buffer, GRAY);
 
-    scroll_offset += (int)(GetMouseWheelMove() * scroll_speed);
-
     for (char c : text)
     { // The text renderer will not do new lines correctly, so I must correct for that here.
         if (c == '\n')
@@ -102,4 +100,7 @@ void scrollable_text_box(Rectangle rect, std::string text)
         }
         chars_across++;
     }
+
+    lines_down -= 2;
+    scroll_offset = std::max(-lines_down * char_size, std::min(char_size, (scroll_offset + (int)(GetMouseWheelMove() * scroll_speed))));
 }
