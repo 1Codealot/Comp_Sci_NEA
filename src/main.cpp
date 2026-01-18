@@ -10,6 +10,13 @@ void compile(std::string path_to_input_file)
 {
     log_text = ""; // Reset the log
     std::ifstream input_file(path_to_input_file);
+
+    // for some reason doing input_file.bad() exists but doesn't do what I expect it to do...
+    if (!input_file.good())
+    {
+        log_text += "file: " + path_to_input_file + " could not be opened.\n";    
+    }
+    
     std::string code((std::istreambuf_iterator<char>(input_file)), std::istreambuf_iterator<char>());
 
     std::vector<std::string> tokens = tokenise("\n\n" + code + "\n\n");
