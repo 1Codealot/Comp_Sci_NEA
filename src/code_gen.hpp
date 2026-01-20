@@ -104,7 +104,7 @@ std::string gen_code(std::vector<std::string> tokens)
             }
             else
             {
-                return "print('You are using a feature that has not been implmented yet.')";
+                return "";
             }
         }
         else

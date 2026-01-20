@@ -6,7 +6,10 @@
 #include "code_gen.hpp"
 
 std::string log_text;
-// Dummy procedure just to demonstrate that I can run a function on a button press.
+
+// So that the user can define their own output directory.
+std::string default_out_path = "./out/";
+
 void compile(std::string path_to_input_file)
 {
     log_text = ""; // Reset the log
@@ -15,9 +18,9 @@ void compile(std::string path_to_input_file)
     // for some reason doing input_file.bad() exists but doesn't do what I expect it to do...
     if (!input_file.good())
     {
-        log_text += "file: " + path_to_input_file + " could not be opened.\n";    
+        log_text += "file: " + path_to_input_file + " could not be opened.\n";
     }
-    
+
     std::string code((std::istreambuf_iterator<char>(input_file)), std::istreambuf_iterator<char>());
 
     std::vector<std::string> tokens = tokenise("\n\n" + code + "\n\n");
@@ -34,16 +37,27 @@ void compile(std::string path_to_input_file)
         std::clog << "[" << token << "]\n";
     }
 
-    bool result = analyse(tokens);
+    bool erroneous = analyse(tokens);
 
-    if (result)
+    if (erroneous)
     {
-        std::clog << "\nErroneus\n";
+        log_text += "\n\nCould not transpile.\n";
+        return;
     }
-    else
+
+    std::string python_code;
+    python_code = gen_code(tokens);
+
+    if (python_code == "")
     {
-        std::clog << "\nNo errors\n";
+        log_text += "\n\nCould not translate code.\n";
+        return;
     }
+
+    std::ofstream output_file((default_out_path + "out.py").c_str());
+
+    output_file << python_code << "\n";
+    output_file.close();
 }
 
 char file_path[max_text_size] = "\0";
