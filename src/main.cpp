@@ -3,6 +3,7 @@
 #include "graphics.hpp"
 #include "tokeniser.hpp"
 #include "analysis.hpp"
+#include "code_gen.hpp"
 
 std::string log_text;
 // Dummy procedure just to demonstrate that I can run a function on a button press.
