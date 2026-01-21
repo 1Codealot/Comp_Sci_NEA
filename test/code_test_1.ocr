@@ -1,4 +1,4 @@
-function gradient(x1, x2, y1, y2)
+function gradient(x1, x2, y1, y2): // The : is not technically valid; but it gets past the syntax checker, though it shouldn't...
     return (y2-y1) / (x2-x1)
 endfunction
 
@@ -8,4 +8,4 @@ x2 = real(input("Enter x2: "))
 y2 = real(input("Enter y2: "))
 
 result = gradient(x1,x2,y1,y2)
-input(gradient)
+input(result)
