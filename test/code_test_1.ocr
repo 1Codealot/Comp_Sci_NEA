@@ -1,0 +1,11 @@
+function gradient(x1, x2, y1, y2)
+    return (y2-y1) / (x2-x1)
+endfunction
+
+x1 = real(input("Enter x1: "))
+y1 = real(input("Enter y1: "))
+x2 = real(input("Enter x2: "))
+y2 = real(input("Enter y2: "))
+
+result = gradient(x1,x2,y1,y2)
+input(gradient)
