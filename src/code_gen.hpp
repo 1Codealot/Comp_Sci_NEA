@@ -8,8 +8,9 @@ std::string gen_code(std::vector<std::string> tokens)
     std::string output_code = "#TODO CREATE OCR RANDOM FUNC\nfrom random import randint";
 
     std::vector<std::string> list_of_exceptions = {"const", "real", "for", "do", "if", "elseif", "else", "switch", "default",
-                                                   "open", "newFile", "array", "[", "procedure", "function", "random", "print", "\\n",
-                                                   "MOD", "DIV", "OR", "AND", "NOT", "^"};
+                                                   "open", "newFile", "array", "[", "procedure", "function", "random", "print", "\n",
+                                                   "MOD", "DIV", "OR", "AND", "NOT", "^", "endfunction", "endprocedure", "endif",
+                                                "endwhile"};
     std::vector<std::string> scope_starts = {"if", "elseif", "else", "for", "while", "do", "switch", "case", "function", "procedure"};
     std::vector<std::string> scope_ends = {"endif", "next", "endwhile", "until", "endswitch", "endfunction", "endprocedure"};
 
@@ -28,10 +29,11 @@ std::string gen_code(std::vector<std::string> tokens)
                 return "";
             }
         }
-        else if (std::find(list_of_exceptions.begin(), list_of_exceptions.end(), tokens.at(i)) != list_of_exceptions.end())
+        if (std::find(list_of_exceptions.begin(), list_of_exceptions.end(), tokens.at(i)) != list_of_exceptions.end())
         {
             // First ones that are trivial replacements
-            if (tokens.at(i) == "const")
+            if (tokens.at(i) == "const" || tokens.at(i) == "endfunction" || tokens.at(i) == "endprocedure" 
+            || tokens.at(i) == "endif" || tokens.at(i) == "endwhile")
             {
                 // Just ignore
                 continue;
@@ -58,10 +60,10 @@ std::string gen_code(std::vector<std::string> tokens)
             }
             else if (tokens.at(i) == "procedure" || tokens.at(i) == "function")
             {
-                output_code += "def";
+                output_code += "def ";
                 continue;
             }
-            else if (tokens.at(i) == "\\n")
+            else if (tokens.at(i) == "\n")
             {
                 output_code += "\n";
 
