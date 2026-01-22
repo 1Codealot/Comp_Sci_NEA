@@ -10,7 +10,7 @@ std::string gen_code(std::vector<std::string> tokens)
     std::vector<std::string> list_of_exceptions = {"const", "real", "for", "do", "if", "elseif", "else", "switch", "default",
                                                    "open", "newFile", "array", "[", "procedure", "function", "random", "print", "\n",
                                                    "MOD", "DIV", "OR", "AND", "NOT", "^", "endfunction", "endprocedure", "endif",
-                                                "endwhile"};
+                                                   "endwhile", "then"};
     std::vector<std::string> scope_starts = {"if", "elseif", "else", "for", "while", "do", "switch", "case", "function", "procedure"};
     std::vector<std::string> scope_ends = {"endif", "next", "endwhile", "until", "endswitch", "endfunction", "endprocedure"};
 
@@ -32,8 +32,7 @@ std::string gen_code(std::vector<std::string> tokens)
         if (std::find(list_of_exceptions.begin(), list_of_exceptions.end(), tokens.at(i)) != list_of_exceptions.end())
         {
             // First ones that are trivial replacements
-            if (tokens.at(i) == "const" || tokens.at(i) == "endfunction" || tokens.at(i) == "endprocedure" 
-            || tokens.at(i) == "endif" || tokens.at(i) == "endwhile")
+            if (tokens.at(i) == "const" || tokens.at(i) == "endfunction" || tokens.at(i) == "endprocedure" || tokens.at(i) == "endif" || tokens.at(i) == "endwhile")
             {
                 // Just ignore
                 continue;
@@ -56,22 +55,6 @@ std::string gen_code(std::vector<std::string> tokens)
             else if (tokens.at(i) == "default")
             {
                 output_code += "case _:"; // official way of designating a default in python according to PEP 0636 [12]
-                continue;
-            }
-            else if (tokens.at(i) == "procedure" || tokens.at(i) == "function")
-            {
-                output_code += "def ";
-                continue;
-            }
-            else if (tokens.at(i) == "\n")
-            {
-                output_code += "\n";
-
-                for (size_t j = 0; j < tab_count; j++)
-                {
-                    output_code += "\t";
-                }
-
                 continue;
             }
             else if (tokens.at(i) == "MOD")
@@ -104,6 +87,46 @@ std::string gen_code(std::vector<std::string> tokens)
                 output_code += "**";
                 continue;
             }
+            else if (tokens.at(i) == "then")
+            {
+                output_code += ":";
+                continue;
+            }
+
+            // Non-trivial replacements.
+            else if (tokens.at(i) == "\n")
+            {
+                output_code += "\n";
+
+                for (size_t j = 0; j < tab_count; j++)
+                {
+                    output_code += "\t";
+                }
+                continue;
+            }
+            else if (tokens.at(i) == "procedure" || tokens.at(i) == "function")
+            {
+                output_code += "def ";
+
+                while (tokens.at(i) != ")")
+                {
+                    i++;
+                    output_code += tokens.at(i);
+                }
+                output_code += ":";
+                continue;
+            }
+            else if (tokens.at(i) == "while")
+            {
+                while (tokens.at(i) != "\n")
+                {
+                    ++i;
+                    output_code += tokens.at(i);
+                }
+                output_code += ":";
+                continue;
+            }
+            
             else
             {
                 return "";
