@@ -126,7 +126,18 @@ std::string gen_code(std::vector<std::string> tokens)
                 output_code += ":";
                 continue;
             }
-            
+            else if (tokens.at(i) == "print")
+            {
+                output_code += tokens.at(i);
+                while (tokens.at(i) != ")")
+                {
+                    i++;
+                    output_code += tokens.at(i);
+                }
+                output_code.pop_back();
+                output_code += ", end = \"\")";
+                continue;
+            }
             else
             {
                 return "";
