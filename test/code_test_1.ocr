@@ -1,4 +1,4 @@
-function gradient(x1, x2, y1, y2): // The : is not technically valid; but it gets past the syntax checker, though it shouldn't...
+function gradient(x1, x2, y1, y2)
     return (y2-y1) / (x2-x1)
 endfunction
 
