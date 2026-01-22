@@ -10,7 +10,7 @@ std::string gen_code(std::vector<std::string> tokens)
     std::vector<std::string> list_of_exceptions = {"const", "real", "for", "do", "if", "elseif", "else", "switch", "default",
                                                    "open", "newFile", "array", "[", "procedure", "function", "random", "print", "\n",
                                                    "MOD", "DIV", "OR", "AND", "NOT", "^", "endfunction", "endprocedure", "endif",
-                                                   "endwhile", "then"};
+                                                   "endwhile", "then", "while"};
     std::vector<std::string> scope_starts = {"if", "elseif", "else", "for", "while", "do", "switch", "case", "function", "procedure"};
     std::vector<std::string> scope_ends = {"endif", "next", "endwhile", "until", "endswitch", "endfunction", "endprocedure"};
 
@@ -118,12 +118,16 @@ std::string gen_code(std::vector<std::string> tokens)
             }
             else if (tokens.at(i) == "while")
             {
+                output_code += "while ";
                 while (tokens.at(i) != "\n")
                 {
-                    ++i;
-                    output_code += tokens.at(i);
+                    i++;
+                    output_code += tokens.at(i) + " ";
                 }
+                output_code.pop_back();
+                output_code.pop_back();
                 output_code += ":";
+                i--;
                 continue;
             }
             else if (tokens.at(i) == "print")
