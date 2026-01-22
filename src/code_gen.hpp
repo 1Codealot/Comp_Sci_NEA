@@ -7,12 +7,12 @@ std::string gen_code(std::vector<std::string> tokens)
     int tab_count = 0;
     std::string output_code = "#TODO CREATE OCR RANDOM FUNC\nfrom random import randint";
 
-    std::vector<std::string> list_of_exceptions = {"const", "real", "for", "do", "if", "elseif", "else", "switch", "default",
+    std::vector<std::string> list_of_exceptions = {"const", "real", "for", "do", "elseif", "else", "switch", "default",
                                                    "open", "newFile", "array", "[", "procedure", "function", "random", "print", "\n",
                                                    "MOD", "DIV", "OR", "AND", "NOT", "^", "endfunction", "endprocedure", "endif",
                                                    "endwhile", "then", "while"};
     std::vector<std::string> scope_starts = {"if", "elseif", "else", "for", "while", "do", "switch", "case", "function", "procedure"};
-    std::vector<std::string> scope_ends = {"endif", "next", "endwhile", "until", "endswitch", "endfunction", "endprocedure"};
+    std::vector<std::string> scope_ends = {"endif", "next", "endwhile", "until", "endswitch", "endfunction", "endprocedure", "elseif", "else"};
 
     for (size_t i = 0; i < tokens.size(); i++)
     {
@@ -20,12 +20,13 @@ std::string gen_code(std::vector<std::string> tokens)
         {
             tab_count++;
         }
-        else if (std::find(scope_ends.begin(), scope_ends.end(), tokens.at(i)) != scope_ends.end())
+        if (std::find(scope_ends.begin(), scope_ends.end(), tokens.at(i)) != scope_ends.end())
         {
             tab_count--;
             if (tab_count < 0)
             {
                 // This means error occured in code generation
+                std::cout << "29\n";
                 return "";
             }
         }
@@ -41,15 +42,21 @@ std::string gen_code(std::vector<std::string> tokens)
             {
                 output_code += "float";
                 continue;
+            }else if (tokens.at(i) == "elseif")
+            {
+                output_code.pop_back(); // to remove a tab
+                output_code += "elif ";
+                continue;
             }
             else if (tokens.at(i) == "else")
             {
+                output_code.pop_back(); // to remove a tab
                 output_code += "else:";
                 continue;
             }
             else if (tokens.at(i) == "switch")
             {
-                output_code += "match";
+                output_code += "match ";
                 continue;
             }
             else if (tokens.at(i) == "default")
@@ -59,7 +66,7 @@ std::string gen_code(std::vector<std::string> tokens)
             }
             else if (tokens.at(i) == "MOD")
             {
-                output_code += "%";
+                output_code += " % ";
                 continue;
             }
             else if (tokens.at(i) == "DIV")
@@ -69,17 +76,17 @@ std::string gen_code(std::vector<std::string> tokens)
             }
             else if (tokens.at(i) == "AND")
             {
-                output_code += "and";
+                output_code += "and ";
                 continue;
             }
             else if (tokens.at(i) == "OR")
             {
-                output_code += "or";
+                output_code += "or ";
                 continue;
             }
             else if (tokens.at(i) == "NOT")
             {
-                output_code += "not";
+                output_code += "not ";
                 continue;
             }
             else if (tokens.at(i) == "^")
@@ -154,12 +161,14 @@ std::string gen_code(std::vector<std::string> tokens)
             }
             else
             {
+                std::cout << "158\n";
+                std::cout << tokens.at(i) << "\n";
                 return "";
             }
         }
         else
         {
-            output_code += tokens.at(i);
+            output_code += tokens.at(i) + " ";
         }
     }
 
