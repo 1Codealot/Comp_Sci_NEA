@@ -132,12 +132,22 @@ std::string gen_code(std::vector<std::string> tokens)
             }
             else if (tokens.at(i) == "print")
             {
+                int brackets = 0;
                 output_code += tokens.at(i);
-                while (tokens.at(i) != ")")
+                do
                 {
                     i++;
+                    if (tokens.at(i) == "(")
+                    {
+                        brackets++;
+                    }
+                    if (tokens.at(i) == ")")
+                    {
+                        brackets--;
+                    }
+
                     output_code += tokens.at(i);
-                }
+                } while (brackets != 0);
                 output_code.pop_back();
                 output_code += ", end = \"\")";
                 continue;
