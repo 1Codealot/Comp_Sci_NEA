@@ -2,6 +2,93 @@
 #include <vector>
 #include <algorithm>
 
+void search_and_replace(std::vector<std::string> &tokens)
+{
+    for (size_t i = 0; i < tokens.size(); i++)
+    {
+
+        if (tokens.at(i) == "real")
+        {
+            tokens.at(i) = "float";
+            continue;
+        }
+        else if (tokens.at(i) == "elseif")
+        {
+            tokens.at(i) = "elif ";
+            continue;
+        }
+        else if (tokens.at(i) == "else")
+        {
+            tokens.at(i) += "else:";
+            continue;
+        }
+        else if (tokens.at(i) == "switch")
+        {
+            tokens.at(i) = "match ";
+            continue;
+        }
+        else if (tokens.at(i) == "default")
+        {
+            tokens.at(i) = "case _:"; // official way of designating a default in python according to PEP 0636 [12]
+            continue;
+        }
+        else if (tokens.at(i) == "MOD")
+        {
+            tokens.at(i) = " % ";
+            continue;
+        }
+        else if (tokens.at(i) == "DIV")
+        {
+            tokens.at(i) = "//";
+            continue;
+        }
+        else if (tokens.at(i) == "AND")
+        {
+            tokens.at(i) = "and ";
+            continue;
+        }
+        else if (tokens.at(i) == "OR")
+        {
+            tokens.at(i) = "or ";
+            continue;
+        }
+        else if (tokens.at(i) == "NOT")
+        {
+            tokens.at(i) = "not ";
+            continue;
+        }
+        else if (tokens.at(i) == "^")
+        {
+            tokens.at(i) = "**";
+            continue;
+        }
+        else if (tokens.at(i) == "then")
+        {
+            tokens.at(i) = ":";
+            continue;
+        }
+        else if (tokens.at(i) == "ASC")
+        {
+            tokens.at(i) = "ord";
+            continue;
+        }
+        else if (tokens.at(i) == "CHR")
+        {
+            tokens.at(i) = "chr";
+        }
+        else if (tokens.at(i) == "upper")
+        {
+            tokens.at(i) = "upper()";
+            continue;
+        }
+        else if (tokens.at(i) == "lower")
+        {
+            tokens.at(i) = "lower()";
+            continue;
+        }
+    }
+}
+
 std::string gen_code(std::vector<std::string> tokens)
 {
     int tab_count = 0;
@@ -15,8 +102,11 @@ std::string gen_code(std::vector<std::string> tokens)
     std::vector<std::string> scope_starts = {"if", "elseif", "else", "for", "while", "do", "switch", "case", "function", "procedure"};
     std::vector<std::string> scope_ends = {"endif", "next", "endwhile", "until", "endswitch", "endfunction", "endprocedure", "elseif", "else"};
 
+    search_and_replace(tokens);
+
     for (size_t i = 0; i < tokens.size(); i++)
     {
+
         if (std::find(scope_starts.begin(), scope_starts.end(), tokens.at(i)) != scope_starts.end())
         {
             tab_count++;
@@ -32,7 +122,6 @@ std::string gen_code(std::vector<std::string> tokens)
         }
         if (std::find(list_of_exceptions.begin(), list_of_exceptions.end(), tokens.at(i)) != list_of_exceptions.end())
         {
-            // First ones that are trivial replacements
             if (tokens.at(i) == "const" || tokens.at(i) == "endfunction" || tokens.at(i) == "endprocedure" || tokens.at(i) == "endif" || tokens.at(i) == "endwhile")
             {
                 // Just ignore
@@ -41,87 +130,6 @@ std::string gen_code(std::vector<std::string> tokens)
             else if (tokens.at(i) == "next")
             {
                 i++;
-                continue;
-            }
-            else if (tokens.at(i) == "real")
-            {
-                output_code += "float";
-                continue;
-            }
-            else if (tokens.at(i) == "elseif")
-            {
-                output_code.pop_back(); // to remove a tab
-                output_code += "elif ";
-                continue;
-            }
-            else if (tokens.at(i) == "else")
-            {
-                output_code.pop_back(); // to remove a tab
-                output_code += "else:";
-                continue;
-            }
-            else if (tokens.at(i) == "switch")
-            {
-                output_code += "match ";
-                continue;
-            }
-            else if (tokens.at(i) == "default")
-            {
-                output_code += "case _:"; // official way of designating a default in python according to PEP 0636 [12]
-                continue;
-            }
-            else if (tokens.at(i) == "MOD")
-            {
-                output_code += " % ";
-                continue;
-            }
-            else if (tokens.at(i) == "DIV")
-            {
-                output_code += "//";
-                continue;
-            }
-            else if (tokens.at(i) == "AND")
-            {
-                output_code += "and ";
-                continue;
-            }
-            else if (tokens.at(i) == "OR")
-            {
-                output_code += "or ";
-                continue;
-            }
-            else if (tokens.at(i) == "NOT")
-            {
-                output_code += "not ";
-                continue;
-            }
-            else if (tokens.at(i) == "^")
-            {
-                output_code += "**";
-                continue;
-            }
-            else if (tokens.at(i) == "then")
-            {
-                output_code += ":";
-                continue;
-            }
-            else if (tokens.at(i) == "ASC")
-            {
-                output_code += "ord";
-                continue;
-            }
-            else if (tokens.at(i) == "CHR")
-            {
-                output_code += "chr";
-            }
-            else if (tokens.at(i) == "upper")
-            {
-                output_code += "upper()";
-                continue;
-            }
-            else if (tokens.at(i) == "lower")
-            {
-                output_code += "lower()";
                 continue;
             }
 
@@ -276,7 +284,7 @@ std::string gen_code(std::vector<std::string> tokens)
                     i++;
                 }
 
-                output_code += "[(" + start + "):(" + end + ")+(" + start + ")]"; 
+                output_code += "[(" + start + "):(" + end + ")+(" + start + ")]";
                 continue;
             }
 
