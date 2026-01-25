@@ -5,6 +5,15 @@ y=2
 
 a = subject.left(y+x  -1)
 b= subject.right(x-y)
+c = subject.upper.left(x)
+d = subject.left(x).upper
 
 print(a + "\n")
 print(b + "\n")
+print(c + " and " + d + " should be the same\n")
+
+e = ASC("A")
+f = CHR(65)
+
+print("Should be 65: " + str(e) + "\n")
+print("Should be 'A': " + f + "\n")
