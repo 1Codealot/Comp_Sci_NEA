@@ -276,7 +276,8 @@ std::string gen_code(std::vector<std::string> tokens)
                     i++;
                 }
 
-                output_code += "[(" + start + "):(" + end + ")+(" + start + ")]"; // Maybe ob1 err
+                output_code += "[(" + start + "):(" + end + ")+(" + start + ")]"; 
+                continue;
             }
 
             else
