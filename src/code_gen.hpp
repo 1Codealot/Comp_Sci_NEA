@@ -212,9 +212,10 @@ std::string gen_code(std::vector<std::string> tokens)
             }
             else if (tokens.at(i) == "left")
             {
-                output_code.pop_back(); // To remove the .
+                output_code.pop_back();
+                output_code.pop_back(); 
                 output_code += "[:";
-                i++;
+                i+=2;
                 while (tokens.at(i) != ")")
                 {
                     output_code += tokens.at(i) + " ";
@@ -225,9 +226,10 @@ std::string gen_code(std::vector<std::string> tokens)
             }
             else if (tokens.at(i) == "right")
             {
-                output_code.pop_back(); // To remove the .
+                output_code.pop_back();
+                output_code.pop_back();
                 output_code += "[-(";
-                i++;
+                i+=2;
                 while (tokens.at(i) != ")")
                 {
                     output_code += tokens.at(i) + " ";
