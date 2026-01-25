@@ -10,7 +10,7 @@ std::string gen_code(std::vector<std::string> tokens)
     std::vector<std::string> list_of_exceptions = {"const", "real", "for", "do", "elseif", "else", "switch", "default",
                                                    "open", "newFile", "array", "[", "procedure", "function", "random", "print", "\n",
                                                    "MOD", "DIV", "OR", "AND", "NOT", "^", "endfunction", "endprocedure", "endif",
-                                                   "endwhile", "then", "while"};
+                                                   "endwhile", "then", "while", "next"};
     std::vector<std::string> scope_starts = {"if", "elseif", "else", "for", "while", "do", "switch", "case", "function", "procedure"};
     std::vector<std::string> scope_ends = {"endif", "next", "endwhile", "until", "endswitch", "endfunction", "endprocedure", "elseif", "else"};
 
@@ -36,6 +36,11 @@ std::string gen_code(std::vector<std::string> tokens)
             if (tokens.at(i) == "const" || tokens.at(i) == "endfunction" || tokens.at(i) == "endprocedure" || tokens.at(i) == "endif" || tokens.at(i) == "endwhile")
             {
                 // Just ignore
+                continue;
+            }
+            else if (tokens.at(i) == "next")
+            {
+                i++;
                 continue;
             }
             else if (tokens.at(i) == "real")
@@ -159,6 +164,28 @@ std::string gen_code(std::vector<std::string> tokens)
                 output_code += ", end = \"\")";
                 continue;
             }
+            else if (tokens.at(i) == "for")
+            {
+                i++;
+                std::string ident = tokens.at(i);
+                i += 2;
+                std::string start = tokens.at(i);
+                i += 2;
+                std::string end = tokens.at(i);
+
+                std::string step = "1";
+                i++;
+
+                if (tokens.at(i) == "step")
+                {
+                    i++;
+                    step = tokens.at(i);
+                }
+
+                output_code += "for " + ident +" in range(" + start + "," + end + "+1," + step + "):";
+                continue;
+            }
+            
             else
             {
                 std::cout << "158\n";
