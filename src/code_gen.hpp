@@ -27,7 +27,6 @@ std::string gen_code(std::vector<std::string> tokens)
             if (tab_count < 0)
             {
                 // This means error occured in code generation
-                std::cout << "29\n";
                 return "";
             }
         }
@@ -190,6 +189,7 @@ std::string gen_code(std::vector<std::string> tokens)
                 i++;
                 std::string ident = tokens.at(i);
                 i += 2;
+                // TODO: This assumes that the boundary definitions are 1 token long.
                 std::string start = tokens.at(i);
                 i += 2;
                 std::string end = tokens.at(i);
@@ -213,9 +213,9 @@ std::string gen_code(std::vector<std::string> tokens)
             else if (tokens.at(i) == "left")
             {
                 output_code.pop_back();
-                output_code.pop_back(); 
+                output_code.pop_back();
                 output_code += "[:";
-                i+=2;
+                i += 2;
                 while (tokens.at(i) != ")")
                 {
                     output_code += tokens.at(i) + " ";
@@ -229,7 +229,7 @@ std::string gen_code(std::vector<std::string> tokens)
                 output_code.pop_back();
                 output_code.pop_back();
                 output_code += "[-(";
-                i+=2;
+                i += 2;
                 while (tokens.at(i) != ")")
                 {
                     output_code += tokens.at(i) + " ";
@@ -237,6 +237,46 @@ std::string gen_code(std::vector<std::string> tokens)
                 }
                 output_code += "):]";
                 continue;
+            }
+            else if (tokens.at(i) == "substring")
+            {
+                output_code.pop_back();
+                output_code.pop_back();
+                i += 2;
+
+                int brackets = 0;
+
+                std::string start;
+                while (tokens.at(i) != "," || brackets > 0)
+                {
+                    start += tokens.at(i);
+                    if (tokens.at(i) == "(")
+                    {
+                        brackets++;
+                    }
+                    else if (tokens.at(i) == ")")
+                    {
+                        brackets--;
+                    }
+                    i++;
+                }
+                i++;
+                std::string end;
+                while (tokens.at(i) != ")" || brackets > 0)
+                {
+                    end += tokens.at(i);
+                    if (tokens.at(i) == "(")
+                    {
+                        brackets++;
+                    }
+                    else if (tokens.at(i) == ")")
+                    {
+                        brackets--;
+                    }
+                    i++;
+                }
+
+                output_code += "[(" + start + "):(" + end + ")+(" + start + ")]"; // Maybe ob1 err
             }
 
             else

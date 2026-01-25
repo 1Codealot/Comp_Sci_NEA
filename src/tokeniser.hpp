@@ -11,7 +11,7 @@ namespace tokeniser // So thaat in future I can tell where functions come from.
         std::vector<std::string> tokens;
         std::string current_token = "";
         // Numbers are not here because I want them to be part of tokens that may be identifers
-        const std::string special_chars = "-=+*/:\";,.'()\n[]!<> ";
+        const std::string special_chars = "-=+*^/:\";,.'()\n[]!<> ";
         // Goes through every character int the string.
         for (size_t i = 0; i < input_code.size(); i++)
         {
