@@ -47,7 +47,8 @@ std::string gen_code(std::vector<std::string> tokens)
             {
                 output_code += "float";
                 continue;
-            }else if (tokens.at(i) == "elseif")
+            }
+            else if (tokens.at(i) == "elseif")
             {
                 output_code.pop_back(); // to remove a tab
                 output_code += "elif ";
@@ -181,8 +182,12 @@ std::string gen_code(std::vector<std::string> tokens)
                     i++;
                     step = tokens.at(i);
                 }
+                else
+                {
+                    i--;
+                }
 
-                output_code += "for " + ident +" in range(" + start + "," + end + "+1," + step + "):";
+                output_code += "for " + ident + " in range(" + start + "," + end + "+1," + step + "):";
                 continue;
             }
             
