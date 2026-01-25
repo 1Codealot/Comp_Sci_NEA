@@ -10,7 +10,8 @@ std::string gen_code(std::vector<std::string> tokens)
     std::vector<std::string> list_of_exceptions = {"const", "real", "for", "do", "elseif", "else", "switch", "default",
                                                    "open", "newFile", "array", "[", "procedure", "function", "random", "print", "\n",
                                                    "MOD", "DIV", "OR", "AND", "NOT", "^", "endfunction", "endprocedure", "endif",
-                                                   "endwhile", "then", "while", "next"};
+                                                   "endwhile", "then", "while", "next", "left", "right", "upper", "lower", "substring",
+                                                   "length", "ASC", "CHR"};
     std::vector<std::string> scope_starts = {"if", "elseif", "else", "for", "while", "do", "switch", "case", "function", "procedure"};
     std::vector<std::string> scope_ends = {"endif", "next", "endwhile", "until", "endswitch", "endfunction", "endprocedure", "elseif", "else"};
 
@@ -105,6 +106,25 @@ std::string gen_code(std::vector<std::string> tokens)
                 output_code += ":";
                 continue;
             }
+            else if (tokens.at(i) == "ASC")
+            {
+                output_code += "ord";
+                continue;
+            }
+            else if (tokens.at(i) == "CHR")
+            {
+                output_code += "chr";
+            }
+            else if (tokens.at(i) == "upper")
+            {
+                output_code += "upper()";
+                continue;
+            }
+            else if (tokens.at(i) == "lower")
+            {
+                output_code += "lower()";
+                continue;
+            }
 
             // Non-trivial replacements.
             else if (tokens.at(i) == "\n")
@@ -190,10 +210,35 @@ std::string gen_code(std::vector<std::string> tokens)
                 output_code += "for " + ident + " in range(" + start + "," + end + "+1," + step + "):";
                 continue;
             }
-            
+            else if (tokens.at(i) == "left")
+            {
+                output_code.pop_back(); // To remove the .
+                output_code += "[:";
+                i++;
+                while (tokens.at(i) != ")")
+                {
+                    output_code += tokens.at(i) + " ";
+                    i++;
+                }
+                output_code += "]";
+                continue;
+            }
+            else if (tokens.at(i) == "right")
+            {
+                output_code.pop_back(); // To remove the .
+                output_code += "[-(";
+                i++;
+                while (tokens.at(i) != ")")
+                {
+                    output_code += tokens.at(i) + " ";
+                    i++;
+                }
+                output_code += "):]";
+                continue;
+            }
+
             else
             {
-                std::cout << "158\n";
                 std::cout << tokens.at(i) << "\n";
                 return "";
             }
