@@ -18,26 +18,7 @@ void search_and_replace(std::vector<std::string> &tokens)
             tokens.at(i) = "float";
             continue;
         }
-        else if (tokens.at(i) == "elseif")
-        {
-            tokens.at(i) = "elif ";
-            continue;
-        }
-        else if (tokens.at(i) == "else")
-        {
-            tokens.at(i) += "else:";
-            continue;
-        }
-        else if (tokens.at(i) == "switch")
-        {
-            tokens.at(i) = "match ";
-            continue;
-        }
-        else if (tokens.at(i) == "default")
-        {
-            tokens.at(i) = "case _:"; // official way of designating a default in python according to PEP 0636 [12]
-            continue;
-        }
+
         else if (tokens.at(i) == "MOD")
         {
             tokens.at(i) = " % ";
@@ -142,6 +123,28 @@ std::string gen_code(std::vector<std::string> tokens)
             else if (tokens.at(i) == "next")
             {
                 i++;
+                continue;
+            }
+            else if (tokens.at(i) == "elseif")
+            {
+                output_code.pop_back(); // to remove a tab
+                output_code += "elif ";
+                continue;
+            }
+            else if (tokens.at(i) == "else")
+            {
+                output_code.pop_back(); // to remove a tab
+                output_code += "else:";
+                continue;
+            }
+            else if (tokens.at(i) == "switch")
+            {
+                output_code += "match ";
+                continue;
+            }
+            else if (tokens.at(i) == "default")
+            {
+                output_code += "case _:"; // official way of designating a default in python according to PEP 0636 [12]
                 continue;
             }
 
