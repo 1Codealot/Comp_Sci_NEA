@@ -2,6 +2,12 @@
 #include <vector>
 #include <algorithm>
 
+/*
+A simple search and replace function, essentially just takes the bits of code that have a very simple 1:1
+replacement and changes them in the tokens.
+&tokens = a reference to the list of tokenised tokens (a reference is used as I can then change the elements
+within the function, instead of making a new list and returning it).
+*/
 void search_and_replace(std::vector<std::string> &tokens)
 {
     for (size_t i = 0; i < tokens.size(); i++)
@@ -89,6 +95,12 @@ void search_and_replace(std::vector<std::string> &tokens)
     }
 }
 
+/*
+The code generation function.
+This is where the tokens get turned from OCR Reference language to actual Python
+tokens = list of fully tokenised tokens
+returns translated Python code
+*/
 std::string gen_code(std::vector<std::string> tokens)
 {
     int tab_count = 0;
