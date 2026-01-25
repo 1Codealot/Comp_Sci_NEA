@@ -1,0 +1,10 @@
+subject = "ComputerScience"
+
+x=3
+y=2
+
+a = subject.left(y+x  -1)
+b= subject.right(x-y)
+
+print(a + "\n")
+print(b + "\n")
