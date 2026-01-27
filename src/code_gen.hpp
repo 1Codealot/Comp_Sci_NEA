@@ -302,6 +302,11 @@ std::string gen_code(std::vector<std::string> tokens)
                 output_code += "[(" + start + "):(" + end + ")+(" + start + ")]";
                 continue;
             }
+            else if (tokens.at(i) == "length")
+            {
+                output_code += "__len__()";
+                continue;
+            }
 
             else
             {
