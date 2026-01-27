@@ -144,7 +144,7 @@ std::string gen_code(std::vector<std::string> tokens)
             }
             else if (tokens.at(i) == "default")
             {
-                output_code += "case _:"; // official way of designating a default in python according to PEP 0636 [12]
+                output_code += "case _"; // official way of designating a default in python according to PEP 0636 [12]
                 continue;
             }
 
