@@ -91,11 +91,12 @@ std::string gen_code(std::vector<std::string> tokens)
                                                    "open", "newFile", "array", "[", "procedure", "function", "random", "print", "\n",
                                                    "MOD", "DIV", "OR", "AND", "NOT", "^", "endfunction", "endprocedure", "endif",
                                                    "endwhile", "then", "while", "next", "left", "right", "upper", "lower", "substring",
-                                                   "length", "ASC", "CHR"};
+                                                   "length", "ASC", "CHR", "case", "endswitch"};
     std::vector<std::string> scope_starts = {"if", "elseif", "else", "for", "while", "do", "switch", "case", "function", "procedure"};
     std::vector<std::string> scope_ends = {"endif", "next", "endwhile", "until", "endswitch", "endfunction", "endprocedure", "elseif", "else"};
 
     search_and_replace(tokens);
+    bool keep_indenting_case = true;
 
     for (size_t i = 0; i < tokens.size(); i++)
     {
@@ -115,7 +116,7 @@ std::string gen_code(std::vector<std::string> tokens)
         }
         if (std::find(list_of_exceptions.begin(), list_of_exceptions.end(), tokens.at(i)) != list_of_exceptions.end())
         {
-            if (tokens.at(i) == "const" || tokens.at(i) == "endfunction" || tokens.at(i) == "endprocedure" || tokens.at(i) == "endif" || tokens.at(i) == "endwhile")
+            if (tokens.at(i) == "const" || tokens.at(i) == "endfunction" || tokens.at(i) == "endprocedure" || tokens.at(i) == "endif" || tokens.at(i) == "endwhile" )
             {
                 // Just ignore
                 continue;
@@ -142,8 +143,31 @@ std::string gen_code(std::vector<std::string> tokens)
                 output_code += "match ";
                 continue;
             }
+
+            else if (tokens.at(i) == "case")
+            {
+                if (keep_indenting_case)
+                {
+                    output_code += "case ";
+                    keep_indenting_case = false;
+                }
+                else{
+                    tab_count--;
+                    output_code.pop_back();
+                    output_code += "case ";
+                }
+
+                continue;
+            }
+            else if (tokens.at(i) == "endswitch")
+            {
+                keep_indenting_case = true;
+                tab_count--;
+                continue;
+            }
             else if (tokens.at(i) == "default")
             {
+                output_code.pop_back();
                 output_code += "case _"; // official way of designating a default in python according to PEP 0636 [12]
                 continue;
             }
