@@ -10,7 +10,7 @@ switch day:
     default:
         print("It is a weekday\n")
 
-        switch x
+        switch x:
             case 1:
                 print("1\n")
             case 2:
