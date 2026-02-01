@@ -1,3 +1,4 @@
+// multiple defaults
 day = input("What day of the week is it?\n").upper.left(3)
 
 x = 3
@@ -13,10 +14,12 @@ switch day:
         switch x:
             case 1:
                 print("1\n")
-            csae 2:
+            case 2:
                 print("2\n")
             default:
                 print("Other\n")
+            default:
+                print("Bad number\n")
         endswitch
 
 endswitch

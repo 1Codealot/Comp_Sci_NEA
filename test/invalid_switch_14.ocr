@@ -1,3 +1,4 @@
+// No default
 day = input("What day of the week is it?\n").upper.left(3)
 
 x = 3
