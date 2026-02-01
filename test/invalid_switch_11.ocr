@@ -1,0 +1,25 @@
+day = input("What day of the week is it?\n").upper.left(3)
+
+x = 3
+
+switch day:
+    case "SAT":
+        print("It is a weekend\n")
+    case "SUN":
+        print("It is a weekend\n")
+    default:
+        print("It is a weekday\n")
+
+        switch x:
+            case 1
+                print("1\n")
+            case 2:
+                print("2\n")
+            default:
+                print("Other\n")
+        endswitch
+
+endswitch
+ 
+
+print("This is after the switch/case\n")

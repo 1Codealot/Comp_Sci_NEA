@@ -496,9 +496,15 @@ namespace analysis
                 errors += "default found without switch statement preceding it\n";
             }
 
-            bool found_default = false;
+            int defaults_needed = 0;
+            int endswitches_needed = 0;
+
+        check_switch:
+        {
             if (tokens.at(i) == "switch")
             {
+                defaults_needed++;
+                endswitches_needed++;
                 i++;
                 if (tokens.at(i) == ":")
                 {
@@ -509,6 +515,7 @@ namespace analysis
                 while (tokens.at(i) != ":")
                 {
                     i++;
+
                     if (tokens.at(i) == "case" || tokens.at(i) == "default" || tokens.at(i) == "endswitch")
                     {
                         has_error = true;
@@ -517,7 +524,7 @@ namespace analysis
                     }
                 }
 
-                while (tokens.at(i) != "endswitch")
+                while (defaults_needed != 0 && endswitches_needed != 0)
                 {
                     if (i == tokens.size() - 1)
                     {
@@ -529,7 +536,7 @@ namespace analysis
 
                     if (tokens.at(i) == "case")
                     {
-                        if (found_default)
+                        if (defaults_needed < 1)
                         {
                             has_error = true;
                             errors += "case statement found after default\n";
@@ -555,23 +562,40 @@ namespace analysis
                     }
                     if (tokens.at(i) == "default")
                     {
-                        if (found_default)
+                        if (defaults_needed < 1)
                         {
                             has_error = true;
                             errors += "More than one default found.\n";
+                            break;
                         }
 
-                        found_default = true;
+                        defaults_needed--;
                         i++;
 
                         if (tokens.at(i) != ":")
                         {
                             has_error = true;
                             errors += "Expected ':' after default; found " + tokens.at(i) + "\n";
+                            break;
                         }
+                        else
+                        {
+                            i++;
+                        }
+                    }
+
+                    if (tokens.at(i) == "endswitch")
+                    {
+                        endswitches_needed--;
+                    }
+
+                    if (tokens.at(i) == "switch")
+                    {
+                        goto check_switch;
                     }
                 }
             }
+        }
         }
 
         return has_error;
@@ -770,5 +794,6 @@ bool analyse(std::vector<std::string> tokens)
     result = result | analysis::stage6(tokens);
     result = result | analysis::stage7(tokens);
     result = result | analysis::stage8(tokens);
+    std::clog << "Tokenised!\n";
     return result;
 }
