@@ -482,6 +482,8 @@ namespace analysis
     bool stage6(std::vector<std::string> tokens)
     {
         bool has_error = false;
+        int endswitches_needed = 0;
+        int defaults_needed = 0;
         for (size_t i = 0; i < tokens.size(); i++)
         {
             if (tokens.at(i) == "case")
@@ -495,9 +497,6 @@ namespace analysis
                 has_error = true;
                 errors += "default found without switch statement preceding it\n";
             }
-
-            int defaults_needed = 0;
-            int endswitches_needed = 0;
 
         check_switch:
         {
@@ -524,12 +523,27 @@ namespace analysis
                     }
                 }
 
-                while (defaults_needed != 0 && endswitches_needed != 0)
+                while (defaults_needed != 0 || endswitches_needed != 0)
                 {
                     if (i == tokens.size() - 1)
                     {
                         has_error = true;
-                        errors += "switch statement found with no endswitch.";
+                        if (defaults_needed > 0)
+                        {
+                            errors += "Switch statement found with " + std::to_string(defaults_needed) + " too few defaults\n";
+                        }
+                        if (defaults_needed < 0)
+                        {
+                            errors += "Switch statement found with " + std::to_string(-defaults_needed) + " too many defaults\n";
+                        }
+                        if (endswitches_needed > 0)
+                        {
+                            errors += "Switch statement found with " + std::to_string(endswitches_needed) + " too few endswitches\n";
+                        }
+                        if (endswitches_needed < 0)
+                        {
+                            errors += "Switch statement found with " + std::to_string(-endswitches_needed) + " too many endswitches\n";
+                        }
                         break;
                     }
                     i++;
@@ -562,14 +576,8 @@ namespace analysis
                     }
                     if (tokens.at(i) == "default")
                     {
-                        if (defaults_needed < 1)
-                        {
-                            has_error = true;
-                            errors += "More than one default found.\n";
-                            break;
-                        }
-
-                        defaults_needed--;
+                        defaults_needed--; // I do not raise an error here if there are too many as I will do that anyway
+                                           // With a better error message.
                         i++;
 
                         if (tokens.at(i) != ":")
@@ -794,6 +802,6 @@ bool analyse(std::vector<std::string> tokens)
     result = result | analysis::stage6(tokens);
     result = result | analysis::stage7(tokens);
     result = result | analysis::stage8(tokens);
-    std::clog << "Tokenised!\n";
+    std::clog << "Analysed!\n";
     return result;
 }
