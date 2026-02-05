@@ -87,16 +87,16 @@ std::string gen_code(std::vector<std::string> tokens)
     int tab_count = 0;
     std::string output_code = "#TODO CREATE OCR RANDOM FUNC\nfrom random import randint";
 
-    std::vector<std::string> list_of_exceptions = {"const", "real", "for", "do", "elseif", "else", "switch", "default",
+    std::vector<std::string> list_of_exceptions = {"const", "real", "for", "do", "until", "elseif", "else", "switch", "default",
                                                    "open", "newFile", "array", "[", "procedure", "function", "random", "print", "\n",
                                                    "MOD", "DIV", "OR", "AND", "NOT", "^", "endfunction", "endprocedure", "endif",
                                                    "endwhile", "then", "while", "next", "left", "right", "upper", "lower", "substring",
                                                    "length", "ASC", "CHR", "case", "endswitch"};
-    std::vector<std::string> scope_starts = {"if", "elseif", "else", "for", "while", "do", "switch",  "function", "procedure"};
+    std::vector<std::string> scope_starts = {"if", "elseif", "else", "for", "while", "do", "switch", "function", "procedure"};
     std::vector<std::string> scope_ends = {"endif", "next", "endwhile", "until", "endswitch", "endfunction", "endprocedure", "elseif", "else"};
 
     search_and_replace(tokens);
-    //bool keep_indenting_case = true;
+    // bool keep_indenting_case = true;
 
     for (size_t i = 0; i < tokens.size(); i++)
     {
@@ -320,6 +320,24 @@ std::string gen_code(std::vector<std::string> tokens)
             else if (tokens.at(i) == "length")
             {
                 output_code += "__len__()";
+                continue;
+            }
+            else if (tokens.at(i) == "do")
+            {
+                output_code += "while True: ";
+                continue;
+            }
+            else if (tokens.at(i) == "until")
+            {
+                std::string break_condition = "";
+                while (tokens.at(i) != "\n")
+                {
+                    i++;
+                    break_condition += tokens.at(i);
+                }
+                break_condition.pop_back();
+
+                output_code += "if (" + break_condition + "): break";
                 continue;
             }
 

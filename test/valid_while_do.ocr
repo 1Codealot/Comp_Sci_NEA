@@ -5,8 +5,7 @@ while a != 0
     a = a-1
 endwhile
 
-b = int(input("Enter a number: "))
+b = 0
 do
-    print("b = " + str(b) + "\n")
-    b = b-1
-until b == 0
+    b = int(input("Enter an even number: "))
+until b MOD 2 == 0
