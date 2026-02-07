@@ -338,6 +338,7 @@ std::string gen_code(std::vector<std::string> tokens)
                 break_condition.pop_back();
 
                 output_code += "if (" + break_condition + "): break";
+                i--; // to go back to the \n token
                 continue;
             }
 

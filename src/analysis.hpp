@@ -618,19 +618,29 @@ namespace analysis
     bool stage7(std::vector<std::string> tokens)
     {
         bool has_error = false;
+        int endwhiles_needed = 0;
+        int untils_needed = 0;
 
         for (size_t i = 0; i < tokens.size(); i++)
         {
             // While loop logic
             if (tokens.at(i) == "endwhile")
             {
-                has_error = true;
-                errors += "endwhile found without matching while.\n";
+                if (endwhiles_needed <= 0)
+                {
+                    has_error = true;
+                    errors += "endwhile found without matching while.\n";
+                }
+                else
+                {
+                    endwhiles_needed--;
+                }
             }
 
             if (tokens.at(i) == "while")
             {
-                while (tokens.at(i) != "endwhile")
+                endwhiles_needed++;
+                while (endwhiles_needed > 0)
                 {
                     i++;
                     if (i == tokens.size() - 1)
@@ -639,25 +649,41 @@ namespace analysis
                         errors += "while loop with no endwhile found\n";
                         break;
                     }
+                    if (tokens.at(i) == "endwhile")
+                    {
+                        endwhiles_needed--;
+                    }
+                    if (tokens.at(i) == "while")
+                    {
+                        endwhiles_needed++;
+                    }
                 }
             }
 
             // Do-until loop logic.
             if (tokens.at(i) == "until")
             {
-                has_error = true;
-                errors += "until found without matching do.\n";
+                if (untils_needed <= 0)
+                {
+                    has_error = true;
+                    errors += "until found without matching do.\n";
+                }
+                else
+                {
+                    untils_needed--;
+                }
             }
 
             if (tokens.at(i) == "do")
             {
+                untils_needed++;
                 i++;
                 if (tokens.at(i) != "\n")
                 {
                     has_error = true;
                     errors += "expected a newline after do statement, found" + tokens.at(i) + "\n";
                 }
-                while (tokens.at(i) != "until")
+                while (untils_needed > 0)
                 {
                     i++;
                     if (i == tokens.size() - 2)
@@ -665,6 +691,14 @@ namespace analysis
                         has_error = true;
                         errors += "do block found without ending until statement\n";
                         break;
+                    }
+                    if (tokens.at(i) == "do")
+                    {
+                        untils_needed++;
+                    }
+                    if (tokens.at(i) == "until")
+                    {
+                        untils_needed--;
                     }
                 }
 
