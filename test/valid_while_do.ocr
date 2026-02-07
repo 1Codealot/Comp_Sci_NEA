@@ -1,11 +1,24 @@
-a = 5
-
-while a != 0 
-    print("a = " + str(a) + "\n")
-    a = a-1
+n = int(input("Enter in a number: "))
+while n > 0
+    m = n
+    while m > 0
+        print("*")
+        m = m - 1
+    endwhile
+    n = n - 1
+    print("\n")
 endwhile
 
-b = 0
+x = int()
+y = int()
+
 do
-    b = int(input("Enter an even number: "))
-until b MOD 2 == 0
+    x = int(input("Enter an even number: "))
+    
+    do
+        y = int(input("Enter an odd number: "))
+    until (y MOD 2 != 0)
+until (x MOD 2 == 0)
+
+print("x: " + str(x) + "\n")
+print("y: " + str(y) + "\n")
