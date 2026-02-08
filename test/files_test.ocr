@@ -1,4 +1,4 @@
-newFile("text.txt")
+newFile("out/text.txt")
 
 f1 = open("text.txt")
 f1.writeLine("Hello")
