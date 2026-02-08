@@ -101,7 +101,7 @@ std::string gen_code(std::vector<std::string> tokens)
                                                    "open", "newFile", "endOfFile", "array", "[", "procedure", "function", "random", "print", "\n",
                                                    "MOD", "DIV", "OR", "AND", "NOT", "^", "endfunction", "endprocedure", "endif",
                                                    "endwhile", "then", "while", "next", "left", "right", "upper", "lower", "substring",
-                                                   "length", "ASC", "CHR", "case", "endswitch"};
+                                                   "length", "ASC", "CHR", "case", "endswitch", "write"};
     std::vector<std::string> scope_starts = {"if", "elseif", "else", "for", "while", "do", "switch", "function", "procedure"};
     std::vector<std::string> scope_ends = {"endif", "next", "endwhile", "until", "endswitch", "endfunction", "endprocedure", "elseif", "else"};
 
@@ -392,10 +392,8 @@ std::string gen_code(std::vector<std::string> tokens)
 
                 } while (brackets != 0);
 
-                i++; // Past the )
-
                 output_code.pop_back();        // Remove the )
-                output_code += ", mode='a+')"; // So that the line is in the style of f = open("file.txt", mode='a+')
+                output_code += ", mode='r+')"; // So that the line is in the style of f = open("file.txt", mode='r+')
 
                 continue;
             }
@@ -434,6 +432,7 @@ std::string gen_code(std::vector<std::string> tokens)
             }
             else if (tokens.at(i) == "write")
             {
+                output_code += "write";
                 int brackets = 0;
                 do
                 {
@@ -449,8 +448,6 @@ std::string gen_code(std::vector<std::string> tokens)
                     }
 
                 } while (brackets != 0);
-
-                i++; // Past the )
 
                 output_code.pop_back(); // Remove the )
                 output_code += " + '\\n')";
