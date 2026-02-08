@@ -6,5 +6,6 @@ f1.writeLine("world!")
 f1.close()
 
 f2 = open("out/text.txt")
+print("Should say 'Hello'\n")
 print(f2.readLine())
 f2.close()
