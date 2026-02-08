@@ -73,6 +73,16 @@ void search_and_replace(std::vector<std::string> &tokens)
             tokens.at(i) = "lower()";
             continue;
         }
+        else if (tokens.at(i) == "readLine")
+        {
+            tokens.at(i) = "readline";
+            continue;
+        }
+        else if (tokens.at(i) == "writeLine")
+        {
+            tokens.at(i) = "write";
+            continue;
+        }
     }
 }
 
@@ -88,7 +98,7 @@ std::string gen_code(std::vector<std::string> tokens)
     std::string output_code = "#TODO CREATE OCR RANDOM FUNC\nfrom random import randint";
 
     std::vector<std::string> list_of_exceptions = {"const", "real", "for", "do", "until", "elseif", "else", "switch", "default",
-                                                   "open", "newFile", "array", "[", "procedure", "function", "random", "print", "\n",
+                                                   "open", "newFile", "endOfFile", "array", "[", "procedure", "function", "random", "print", "\n",
                                                    "MOD", "DIV", "OR", "AND", "NOT", "^", "endfunction", "endprocedure", "endif",
                                                    "endwhile", "then", "while", "next", "left", "right", "upper", "lower", "substring",
                                                    "length", "ASC", "CHR", "case", "endswitch"};
@@ -360,6 +370,90 @@ std::string gen_code(std::vector<std::string> tokens)
 
                 output_code += "if (" + break_condition + "): break";
                 i--; // to go back to the \n token
+                continue;
+            }
+            else if (tokens.at(i) == "open")
+            {
+                output_code += "open";
+                int brackets = 0;
+
+                do
+                {
+                    i++;
+                    output_code += tokens.at(i);
+                    if (tokens.at(i) == "(")
+                    {
+                        brackets++;
+                    }
+                    if (tokens.at(i) == ")")
+                    {
+                        brackets--;
+                    }
+
+                } while (brackets != 0);
+
+                i++; // Past the )
+
+                output_code.pop_back();        // Remove the )
+                output_code += ", mode='a+')"; // So that the line is in the style of f = open("file.txt", mode='a+')
+
+                continue;
+            }
+            else if (tokens.at(i) == "newFile")
+            {
+                output_code += "try: open";
+                int brackets = 0;
+
+                do
+                {
+                    i++;
+                    output_code += tokens.at(i);
+                    if (tokens.at(i) == "(")
+                    {
+                        brackets++;
+                    }
+                    if (tokens.at(i) == ")")
+                    {
+                        brackets--;
+                    }
+
+                } while (brackets != 0);
+
+                i++; // Past the )
+
+                output_code.pop_back(); // Remove the )
+                output_code += ", mode='x')\n";
+
+                for (size_t n = 0; n < tab_count; n++)
+                {
+                    output_code += "\t";
+                }
+
+                output_code += "except FileExistsError:pass"; // Yes, really bad practice; but this is the least invasive way of doing it
+                continue;
+            }
+            else if (tokens.at(i) == "write")
+            {
+                int brackets = 0;
+                do
+                {
+                    i++;
+                    output_code += tokens.at(i);
+                    if (tokens.at(i) == "(")
+                    {
+                        brackets++;
+                    }
+                    if (tokens.at(i) == ")")
+                    {
+                        brackets--;
+                    }
+
+                } while (brackets != 0);
+
+                i++; // Past the )
+
+                output_code.pop_back(); // Remove the )
+                output_code += " + '\\n')";
                 continue;
             }
 

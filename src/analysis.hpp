@@ -13,8 +13,8 @@ However, it should and will still error anyway.
 std::vector<std::string> protected_identifers =
     {"AND", "OR", "NOT", "MOD", "DIV", "const", "global", "input", "print", "str", "int",
      "float", "real", "bool", "for", "to", "step", "next", "while", "endwhile", "do", "until", "if", "then", "elseif", "else", "endif",
-     "switch", "case", "default", "endswitch", "ASC", "CHR", "open", "newFile", "array", "procedure", "endprocedure", "function",
-     "return", "endfunction", "random", "upper", "lower", "left", "right"};
+     "switch", "case", "default", "endswitch", "endOfFile", "newFile", "ASC", "CHR", "open", "newFile", "array", "procedure", "endprocedure", "function",
+     "close", "readLine", "writeLine", "return", "endfunction", "random", "upper", "lower", "left", "right"};
 
 namespace analysis
 {

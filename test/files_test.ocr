@@ -1,0 +1,10 @@
+newFile("text.txt")
+
+f1 = open("text.txt")
+f1.writeLine("Hello")
+f1.writeLine("world!")
+f1.close()
+
+f2 = open("text.txt")
+print(f2.readLine())
+f2.close()
