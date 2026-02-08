@@ -16,3 +16,10 @@ for m =0 to 5
     next n
     print("\n")
 next m
+
+w = 7
+x = 10
+y = 3
+for z = w + 2 to x + 5 step y-2
+    print(str(z) + "\n")
+next z

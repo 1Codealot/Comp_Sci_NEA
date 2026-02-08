@@ -226,26 +226,47 @@ std::string gen_code(std::vector<std::string> tokens)
             {
                 i++;
                 std::string ident = tokens.at(i);
-                i += 2;
-                // TODO: This assumes that the boundary definitions are 1 token long.
-                std::string start = tokens.at(i);
-                i += 2;
-                std::string end = tokens.at(i);
 
-                std::string step = "1";
-                i++;
+                i += 2; // Go to token after the =
+                std::string start = tokens.at(i);
+                while (tokens.at(i) != "to")
+                {
+                    i++;
+                    start += tokens.at(i);
+                }
+                i++; // Skip past "to".
+
+                // Remove "to"
+                start.pop_back();
+                start.pop_back();
+
+                std::string end;
+                while (tokens.at(i) != "step" && tokens.at(i) != "\n")
+                {
+                    end += tokens.at(i);
+                    i++;
+                }
+
+                std::string step = "";
 
                 if (tokens.at(i) == "step")
                 {
-                    i++;
-                    step = tokens.at(i);
+                    while (tokens.at(i) != "\n")
+                    {
+                        i++;
+                        step += tokens.at(i);
+                    }
+                    // Remove new line
+                    step.pop_back();
+                    i--;
                 }
                 else
                 {
+                    step = "1";
                     i--;
                 }
 
-                output_code += "for " + ident + " in range(" + start + "," + end + "+1," + step + "):";
+                output_code += "for " + ident + " in range(" + start + ",(" + end + ")+1," + step + "):";
                 continue;
             }
             else if (tokens.at(i) == "left")
