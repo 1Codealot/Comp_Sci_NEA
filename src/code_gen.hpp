@@ -41,7 +41,7 @@ void search_and_replace(std::vector<std::string> &tokens)
         }
         else if (tokens.at(i) == "NOT")
         {
-            tokens.at(i) = " not ";
+            tokens.at(i) = "not ";
             continue;
         }
         else if (tokens.at(i) == "^")
@@ -109,7 +109,6 @@ std::string gen_code(std::vector<std::string> tokens)
 
     for (size_t i = 0; i < tokens.size(); i++)
     {
-        std::cout << i << "\n";
         if (std::find(scope_starts.begin(), scope_starts.end(), tokens.at(i)) != scope_starts.end())
         {
             tab_count++;
