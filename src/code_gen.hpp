@@ -41,7 +41,7 @@ void search_and_replace(std::vector<std::string> &tokens)
         }
         else if (tokens.at(i) == "NOT")
         {
-            tokens.at(i) = "not ";
+            tokens.at(i) = " not ";
             continue;
         }
         else if (tokens.at(i) == "^")
@@ -198,16 +198,14 @@ std::string gen_code(std::vector<std::string> tokens)
             }
             else if (tokens.at(i) == "while")
             {
+                int return_to_index = i;
                 output_code += "while ";
                 while (tokens.at(i) != "\n")
                 {
                     i++;
-                    output_code += tokens.at(i) + " ";
                 }
-                output_code.pop_back();
-                output_code.pop_back();
-                output_code += ":";
-                i--;
+                tokens.insert(tokens.begin()+i,":");
+                i = return_to_index;
                 continue;
             }
             else if (tokens.at(i) == "print")
@@ -455,12 +453,13 @@ std::string gen_code(std::vector<std::string> tokens)
             }
             else if (tokens.at(i) == "endOfFile")
             {
-                /* Yes this assumes that the file identifier is only one token which does mean 
+                /* Yes this assumes that the file identifier is only one token which does mean
                 that if they choose a file object inside a list, this will not work. However,
                 it is a trivial fix, so it isn't worth trying to figure it out here.*/
                 std::string file_ident = tokens.at(i - 2);
                 //                      So that the () is required.
-                output_code += "tell" + tokens.at(i+1) + tokens.at(i+2) + " == os.fstat(" + file_ident + ".fileno()).st_size";
+                output_code += "tell" + tokens.at(i+1 ) + tokens.at(i+2) + " == os.fstat(" + file_ident + ".fileno()).st_size";
+                i+=2;
                 continue;
             }
 
