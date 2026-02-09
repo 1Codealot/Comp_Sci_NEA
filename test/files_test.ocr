@@ -6,6 +6,8 @@ f1.writeLine("world!")
 f1.close()
 
 f2 = open("out/text.txt")
-print("Should say 'Hello'\n")
-print(f2.readLine())
+print("Should say 'Hello world!' across 2 lines.\n")
+while NOT f2.endOfFile()
+    print(f2.readLine())
+endwhile
 f2.close()

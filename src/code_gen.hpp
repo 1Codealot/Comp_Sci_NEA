@@ -95,7 +95,7 @@ returns translated Python code
 std::string gen_code(std::vector<std::string> tokens)
 {
     int tab_count = 0;
-    std::string output_code = "#TODO CREATE OCR RANDOM FUNC\nfrom random import randint";
+    std::string output_code = "#TODO CREATE OCR RANDOM FUNC\nfrom random import randint\nimport os";
 
     std::vector<std::string> list_of_exceptions = {"const", "real", "for", "do", "until", "elseif", "else", "switch", "default",
                                                    "open", "newFile", "endOfFile", "array", "[", "procedure", "function", "random", "print", "\n",
@@ -106,10 +106,10 @@ std::string gen_code(std::vector<std::string> tokens)
     std::vector<std::string> scope_ends = {"endif", "next", "endwhile", "until", "endswitch", "endfunction", "endprocedure", "elseif", "else"};
 
     search_and_replace(tokens);
-    // bool keep_indenting_case = true;
 
     for (size_t i = 0; i < tokens.size(); i++)
     {
+        std::cout << i << "\n";
         if (std::find(scope_starts.begin(), scope_starts.end(), tokens.at(i)) != scope_starts.end())
         {
             tab_count++;
@@ -451,6 +451,16 @@ std::string gen_code(std::vector<std::string> tokens)
 
                 output_code.pop_back(); // Remove the )
                 output_code += " + '\\n')";
+                continue;
+            }
+            else if (tokens.at(i) == "endOfFile")
+            {
+                /* Yes this assumes that the file identifier is only one token which does mean 
+                that if they choose a file object inside a list, this will not work. However,
+                it is a trivial fix, so it isn't worth trying to figure it out here.*/
+                std::string file_ident = tokens.at(i - 2);
+                //                      So that the () is required.
+                output_code += "tell" + tokens.at(i+1) + tokens.at(i+2) + " == os.fstat(" + file_ident + ".fileno()).st_size";
                 continue;
             }
 
