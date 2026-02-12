@@ -4,7 +4,7 @@ function absolute(a)
     else
         return a
     endif
-endfuction
+endfunction
 
 x1 = random(1,5)
 x2 = random(1.5,5)
