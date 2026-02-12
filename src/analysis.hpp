@@ -11,7 +11,7 @@ it says that a variable already has the name even if the function is defined fir
 However, it should and will still error anyway.
 */
 std::vector<std::string> protected_identifers =
-    {"AND", "OR", "NOT", "MOD", "DIV", "const", "global", "input", "print", "str", "int",
+    {"AND", "OR", "NOT", "MOD", "DIV", "const", "global", "input", "print", "str", "int","random","OCR_Random",
      "float", "real", "bool", "for", "to", "step", "next", "while", "endwhile", "do", "until", "if", "then", "elseif", "else", "endif",
      "switch", "case", "default", "endswitch", "endOfFile", "newFile", "ASC", "CHR", "open", "newFile", "array", "procedure", "endprocedure", "function",
      "close", "readLine", "writeLine", "return", "endfunction", "random", "upper", "lower", "left", "right"};

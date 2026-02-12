@@ -1,0 +1,38 @@
+function absolute(a)
+    if a < 0 then
+        return -a
+    else
+        return a
+    endif
+endfuction
+
+x1 = random(1,5)
+x2 = random(1.5,5)
+x3 = random(1,5.5)
+x4 = random(1.5,5.5)
+x5 = random(1.5,1.6)
+
+print("General randomness:\n")
+print(str(x1)+"\n"+str(x2)+"\n"+str(x3)+"\n"+str(x4)+"\n"+str(x5)+"\n")
+
+print("Showing both numbers in range are included:\n")
+
+do
+    x1 = random(1,5)
+until(x1 == 1)
+print(str(x1) + "\n")
+
+do
+    x1 = random(1,5)
+until(x1 == 5)
+print(str(x1) + "\n")
+
+do
+    x1 = random(1.2,5.0)
+until(absolute(x1-1.2) < 0.000001)
+print(str(x1) + "\n")
+
+do
+    x1 = random(1.0,5.3)
+until(absolute(x1 - 5.3) <= 0.000001)
+print(str(x1) + "\n")

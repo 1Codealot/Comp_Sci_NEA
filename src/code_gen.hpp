@@ -83,6 +83,12 @@ void search_and_replace(std::vector<std::string> &tokens)
             tokens.at(i) = "write";
             continue;
         }
+        else if (tokens.at(i) == "random")
+        {
+            tokens.at(i) = "OCR_Random";
+            continue;
+        }
+        
     }
 }
 
@@ -95,7 +101,7 @@ returns translated Python code
 std::string gen_code(std::vector<std::string> tokens)
 {
     int tab_count = 0;
-    std::string output_code = "#TODO CREATE OCR RANDOM FUNC\nfrom random import randint\nimport os";
+    std::string output_code = "import os;def OCR_Random(a,b):from random import uniform as _u;return int(_u(a,b+1))if type(a)==int and type(b)==int else _u(a,b)\n";
 
     std::vector<std::string> list_of_exceptions = {"const", "real", "for", "do", "until", "elseif", "else", "switch", "default",
                                                    "open", "newFile", "endOfFile", "array", "[", "procedure", "function", "random", "print", "\n",
