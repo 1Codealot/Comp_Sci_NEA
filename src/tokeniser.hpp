@@ -79,18 +79,33 @@ namespace tokeniser // So thaat in future I can tell where functions come from.
                 new_tokens.push_back(holder);
                 continue;
             }
-            
+
             // Join together == != <= >=
             if (tokens_in.at(i) == "=")
             {
                 if (tokens_in.at(i - 1) == "!" || tokens_in.at(i - 1) == ">" || tokens_in.at(i - 1) == "<" || tokens_in.at(i - 1) == "=")
                 {
-                    new_tokens.at(new_tokens.size()-1) += "=";
-                    continue; 
+                    new_tokens.at(new_tokens.size() - 1) += "=";
+                    continue;
                 }
             }
 
             new_tokens.push_back(tokens_in.at(i));
+
+            // Join together real numbers
+            if (tokens_in.at(i) == ".")
+            {
+                std::string integer_part = tokens_in.at(i - 1);
+                std::string fraction_part = tokens_in.at(i + 1);
+
+                if (std::regex_match(integer_part, std::regex("\\d*")) && std::regex_match(fraction_part, std::regex("\\d*")))
+                {
+                    new_tokens.pop_back(); // Remove the integer part
+                    new_tokens.pop_back(); // Remove the integer part
+                    new_tokens.push_back(integer_part + "." + fraction_part);
+                    i++; // Skip over the fraction part.
+                }
+            }
         }
 
         for (int i = 0; i < new_tokens.size(); i++)
