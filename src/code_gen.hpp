@@ -115,6 +115,7 @@ std::string gen_code(std::vector<std::string> tokens)
 
     for (size_t i = 0; i < tokens.size(); i++)
     {
+        std::cout << i << "\n";
         if (std::find(scope_starts.begin(), scope_starts.end(), tokens.at(i)) != scope_starts.end())
         {
             tab_count++;
