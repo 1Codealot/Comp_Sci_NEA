@@ -90,7 +90,6 @@ namespace tokeniser // So thaat in future I can tell where functions come from.
                 }
             }
 
-            new_tokens.push_back(tokens_in.at(i));
 
             // Join together real numbers
             if (tokens_in.at(i) == ".")
@@ -101,11 +100,12 @@ namespace tokeniser // So thaat in future I can tell where functions come from.
                 if (std::regex_match(integer_part, std::regex("\\d*")) && std::regex_match(fraction_part, std::regex("\\d*")))
                 {
                     new_tokens.pop_back(); // Remove the integer part
-                    new_tokens.pop_back(); // Remove the integer part
                     new_tokens.push_back(integer_part + "." + fraction_part);
                     i++; // Skip over the fraction part.
                 }
+                continue;
             }
+            new_tokens.push_back(tokens_in.at(i));
         }
 
         for (int i = 0; i < new_tokens.size(); i++)
