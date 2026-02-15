@@ -474,14 +474,16 @@ std::string gen_code(std::vector<std::string> tokens)
                 i++;
 
                 output_code += tokens.at(i) + "=";
-                if (tokens.at(i) != "=")
+                if (tokens.at(i+1) != "=")
                 {
 
+                    std::clog << "here1\n";
                     do
                     {
                         i += 2;
                         dimension_stack.push_back(tokens.at(i));
                     } while (tokens.at(i + 1) != "]");
+                    i++; 
 
                     for (size_t n = 0; n < dimension_stack.size(); n++)
                     {
@@ -497,6 +499,7 @@ std::string gen_code(std::vector<std::string> tokens)
                 }
                 else
                 {
+                    std::clog << "here2\n";
                     i += 2;
                     // so that the user can initialise the array with elements from another array
                     int square_brackets = 0;
@@ -512,7 +515,9 @@ std::string gen_code(std::vector<std::string> tokens)
                         {
                             square_brackets--;
                         }
+                        i++;
                     } while (square_brackets != 0);
+                i--;
                 }
                 continue;
             }
