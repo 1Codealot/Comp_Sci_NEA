@@ -1,0 +1,16 @@
+array arr1[5]
+array arr2[3,6]
+array arr3[1,2,3,4,5,6]
+array arr4 = [123,456,789]
+array arr5 = [[1,2,3],[4,5,6],[7,8,9]]
+
+print(arr1)
+print("\n")
+print(arr2)
+print("\n")
+print(arr3)
+print("\n")
+print(arr4)
+print("\n")
+print(arr5)
+print("\n")
