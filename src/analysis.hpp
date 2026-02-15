@@ -855,18 +855,16 @@ namespace analysis
                 i++;
                 if (tokens.at(i) != "=")
                 {
-                    i++;
                     if (tokens.at(i) != "[")
                     {
                         has_error = true;
                         errors += "When defining an array, without populating it, you must open with an open square bracket\n";
                         continue;
                     }
-
                     while (tokens.at(i) != "]")
                     {
                         i += 2;
-                        if (!std::regex_match(tokens.at(i), std::regex("(\\d)+"))) // I.E. (not) a number
+                        if (!std::regex_match(tokens.at(i-1), std::regex("(\\d)+"))) // I.E. (not) a number
                         {
                             has_error = true;
                             errors += "When defining an array's dimensions, you must use an integer\n";
