@@ -88,7 +88,6 @@ void search_and_replace(std::vector<std::string> &tokens)
             tokens.at(i) = "OCR_Random";
             continue;
         }
-        
     }
 }
 
@@ -210,7 +209,7 @@ std::string gen_code(std::vector<std::string> tokens)
                 {
                     i++;
                 }
-                tokens.insert(tokens.begin()+i,":");
+                tokens.insert(tokens.begin() + i, ":");
                 i = return_to_index;
                 continue;
             }
@@ -464,8 +463,57 @@ std::string gen_code(std::vector<std::string> tokens)
                 it is a trivial fix, so it isn't worth trying to figure it out here.*/
                 std::string file_ident = tokens.at(i - 2);
                 //                      So that the () is required.
-                output_code += "tell" + tokens.at(i+1 ) + tokens.at(i+2) + " == os.fstat(" + file_ident + ".fileno()).st_size";
-                i+=2;
+                output_code += "tell" + tokens.at(i + 1) + tokens.at(i + 2) + " == os.fstat(" + file_ident + ".fileno()).st_size";
+                i += 2;
+                continue;
+            }
+            else if (tokens.at(i) == "array")
+            {
+                // Again using deque as a stack as there is no native std::stack in c++ stdlib
+                std::deque<std::string> dimension_stack;
+                i++;
+
+                output_code += tokens.at(i) + "=";
+                if (tokens.at(i) != "=")
+                {
+
+                    do
+                    {
+                        i += 2;
+                        dimension_stack.push_back(tokens.at(i));
+                    } while (tokens.at(i + 1) != "]");
+
+                    for (size_t n = 0; n < dimension_stack.size(); n++)
+                    {
+                        output_code += "[";
+                    }
+
+                    output_code += "None";
+                    while (dimension_stack.size() > 0)
+                    {
+                        output_code += "]*" + dimension_stack.at(dimension_stack.size() - 1);
+                        dimension_stack.pop_back();
+                    }
+                }
+                else
+                {
+                    i += 2;
+                    // so that the user can initialise the array with elements from another array
+                    int square_brackets = 0;
+
+                    do
+                    {
+                        output_code += tokens.at(i);
+                        if (tokens.at(i) == "[")
+                        {
+                            square_brackets++;
+                        }
+                        if (tokens.at(i) == "]")
+                        {
+                            square_brackets--;
+                        }
+                    } while (square_brackets != 0);
+                }
                 continue;
             }
 
