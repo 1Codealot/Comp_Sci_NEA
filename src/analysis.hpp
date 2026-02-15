@@ -824,6 +824,66 @@ namespace analysis
         return has_error;
     }
 
+    /*
+    Stage 9 of syntax analysis. This is where the program checks that everything to do
+    with arrays are valid.
+    tokens = fully tokenised tokens
+    returns whether or not there is an error.
+    */
+    bool stage9(std::vector<std::string> tokens)
+    {
+        bool has_error = false;
+        for (size_t i = 0; i < tokens.size(); i++)
+        {
+            // On array initialisation.
+            if (tokens.at(i) == "array")
+            {
+                i++;
+                if (std::find(protected_identifers.begin(), protected_identifers.end(), tokens.at(i)) != protected_identifers.end())
+                {
+                    has_error = true;
+                    errors += "you cannot use " + tokens.at(i) + " as an identifier again.\n";
+                    continue;
+                }
+                if (!(std::regex_match(tokens.at(i), std::regex("[A-Za-z_](\\w)*"))))
+                {
+                    has_error = true;
+                    errors += tokens.at(i) + " is not a valid identifier for an array\n";
+                    continue;
+                }
+
+                i++;
+                if (tokens.at(i) != "=")
+                {
+                    i++;
+                    if (tokens.at(i) != "[")
+                    {
+                        has_error = true;
+                        errors += "When defining an array, without populating it, you must open with an open square bracket\n";
+                        continue;
+                    }
+
+                    while (tokens.at(i) != "]")
+                    {
+                        i += 2;
+                        if (!std::regex_match(tokens.at(i), std::regex("(\\d)+"))) // I.E. (not) a number
+                        {
+                            has_error = true;
+                            errors += "When defining an array's dimensions, you must use an integer\n";
+                            continue;
+                        }
+                        if (tokens.at(i) != "," && tokens.at(i) != "]")
+                        {
+                            has_error = true;
+                            errors += "When defining an array's dimensions, you must separate values with commas.\n";
+                            continue;
+                        }
+                    }
+                }
+            }
+        }
+        return has_error;
+    }
 } // namespace analysis
 
 /*
@@ -844,6 +904,7 @@ bool analyse(std::vector<std::string> tokens)
     result = result | analysis::stage6(tokens);
     result = result | analysis::stage7(tokens);
     result = result | analysis::stage8(tokens);
+    result = result | analysis::stage9(tokens);
     std::clog << "Analysed!\n";
     return result;
 }
