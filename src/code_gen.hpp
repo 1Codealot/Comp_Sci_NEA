@@ -476,8 +476,6 @@ std::string gen_code(std::vector<std::string> tokens)
                 output_code += tokens.at(i) + "=";
                 if (tokens.at(i+1) != "=")
                 {
-
-                    std::clog << "here1\n";
                     do
                     {
                         i += 2;
@@ -499,7 +497,6 @@ std::string gen_code(std::vector<std::string> tokens)
                 }
                 else
                 {
-                    std::clog << "here2\n";
                     i += 2;
                     // so that the user can initialise the array with elements from another array
                     int square_brackets = 0;
