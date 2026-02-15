@@ -1,0 +1,3 @@
+array 1starr[5]
+
+print(1starr)
