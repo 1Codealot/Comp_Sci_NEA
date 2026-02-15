@@ -1,7 +1,7 @@
 array arr1[5]
 array arr2[3,6]
 array arr3[1,1,1,1,2]
-array arr4 = [123,456,789]
+array arr4 = [12.3,45.6,78.9]
 array arr5 = [[1,2,3],[4,5,6],[7,8,9]]
 
 print(arr1)
@@ -14,3 +14,15 @@ print(arr4)
 print("\n")
 print(arr5)
 print("\n")
+
+arr1[1] = 4
+arr2[2,5] = 5
+arr3[0,0,0,0,1] = 6
+arr4[1] = 6.54
+arr5[1,2] = arr5[1,2] * 2
+
+print(str(arr1[1]) + "\n")
+print(str(arr2[2,5]) + "\n")
+print(str(arr3[0,0,0,0,1]) + "\n")
+print(str(arr4[1]) + "\n")
+print(str(arr5[1,2]) + "\n")
