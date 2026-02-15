@@ -1,3 +1,4 @@
+// Should say an integer is required when defining an array
 a = 5
 
 array arr1[a]

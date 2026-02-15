@@ -1,1 +1,2 @@
+// Should say that commas must be used to separate.
 array arr1[1;2;3]
