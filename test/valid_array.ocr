@@ -18,7 +18,7 @@ print("\n")
 arr1[1] = 4
 arr2[2,5] = 5
 arr3[0,0,0,0,1] = 6
-arr4[1] = 6.54
+arr4[random(0,2)] = 2.22
 arr5[1,2] = arr5[1,2] * 2
 
 print(str(arr1[1]) + "\n")
