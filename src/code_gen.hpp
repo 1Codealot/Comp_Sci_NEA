@@ -12,7 +12,6 @@ void search_and_replace(std::vector<std::string> &tokens)
 {
     for (size_t i = 0; i < tokens.size(); i++)
     {
-
         if (tokens.at(i) == "real")
         {
             tokens.at(i) = "float";
@@ -92,6 +91,39 @@ void search_and_replace(std::vector<std::string> &tokens)
 }
 
 /*
+Function to turn anything like `array1[3,5]` to python's equivalent array1[3][5]
+&tokens = a reference to the list of tokenised tokens
+*/
+void fix_array_indexes(std::vector<std::string> &tokens)
+{
+    bool change_commas = false;
+    std::deque<bool> change_commas_states;
+    change_commas_states.push_back(change_commas);
+    for (size_t i = 0; i < tokens.size(); i++)
+    {
+        if (tokens.at(i) == "[" && tokens.at(i - 1) != "=")
+        {
+            change_commas = true;
+            change_commas_states.push_back(change_commas);
+        }
+        else if (tokens.at(i) == "(" || (tokens.at(i) == "[" && tokens.at(i - 1) == "="))
+        {
+            change_commas = false;
+            change_commas_states.push_back(change_commas);
+        }
+        else if (tokens.at(i) == ")" || tokens.at(i) == "]")
+        {
+            change_commas = change_commas_states.at(change_commas_states.size() - 1);
+            change_commas_states.pop_back();
+        }
+
+        else if (tokens.at(i) == "," && change_commas)
+        {
+            tokens.at(i) = "][";
+        }
+    }
+}
+/*
 The code generation function.
 This is where the tokens get turned from OCR Reference language to actual Python
 tokens = list of fully tokenised tokens
@@ -103,7 +135,7 @@ std::string gen_code(std::vector<std::string> tokens)
     std::string output_code = "import os\ndef OCR_Random(a,b):from random import uniform as _u;return int(_u(a,b+1))if type(a)==int and type(b)==int else _u(a,b)\n";
 
     std::vector<std::string> list_of_exceptions = {"const", "real", "for", "do", "until", "elseif", "else", "switch", "default",
-                                                   "open", "newFile", "endOfFile", "array", "[", "procedure", "function", "random", "print", "\n",
+                                                   "open", "newFile", "endOfFile", "array",  "procedure", "function", "random", "print", "\n",
                                                    "MOD", "DIV", "OR", "AND", "NOT", "^", "endfunction", "endprocedure", "endif",
                                                    "endwhile", "then", "while", "next", "left", "right", "upper", "lower", "substring",
                                                    "length", "ASC", "CHR", "case", "endswitch", "write"};
@@ -111,6 +143,7 @@ std::string gen_code(std::vector<std::string> tokens)
     std::vector<std::string> scope_ends = {"endif", "next", "endwhile", "until", "endswitch", "endfunction", "endprocedure", "elseif", "else"};
 
     search_and_replace(tokens);
+    fix_array_indexes(tokens); 
 
     for (size_t i = 0; i < tokens.size(); i++)
     {
@@ -474,14 +507,14 @@ std::string gen_code(std::vector<std::string> tokens)
                 i++;
 
                 output_code += tokens.at(i) + "=";
-                if (tokens.at(i+1) != "=")
+                if (tokens.at(i + 1) != "=")
                 {
                     do
                     {
                         i += 2;
                         dimension_stack.push_back(tokens.at(i));
                     } while (tokens.at(i + 1) != "]");
-                    i++; 
+                    i++;
 
                     for (size_t n = 0; n < dimension_stack.size(); n++)
                     {
@@ -514,7 +547,7 @@ std::string gen_code(std::vector<std::string> tokens)
                         }
                         i++;
                     } while (square_brackets != 0);
-                i--;
+                    i--;
                 }
                 continue;
             }
