@@ -896,7 +896,7 @@ bool analyse(std::vector<std::string> tokens)
     bool result = false;
     result = result | analysis::stage1(tokens);
     result = result | analysis::stage2(tokens);
-    result = result | analysis::stage3(tokens);
+    //result = result | analysis::stage3(tokens);
     result = result | analysis::stage4(tokens);
     result = result | analysis::stage5(tokens);
     result = result | analysis::stage6(tokens);
