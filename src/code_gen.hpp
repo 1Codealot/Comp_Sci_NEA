@@ -92,32 +92,35 @@ void search_and_replace(std::vector<std::string> &tokens)
 
 /*
 Function to turn anything like `array1[3,5]` to python's equivalent array1[3][5]
+This is only needed when accessing elements, not when defining
+(i.e. If not init, and inside square bracket most recently)
 &tokens = a reference to the list of tokenised tokens
 */
 void fix_array_indexes(std::vector<std::string> &tokens)
 {
-    int inside_square_brackets = 0;
-    bool is_initialisation = false;
+    std::deque<std::string> bracket_stack;
+    bool is_init = false;
+
     for (size_t i = 0; i < tokens.size(); i++)
     {
-        // If inside square brackets and has an equal before all the open square brackets
-        if (tokens.at(i) == "[")
+        if (tokens.at(i) == "array")
         {
-            inside_square_brackets++;
+            is_init = true;
         }
-        else if (tokens.at(i) == "]")
+        else if (tokens.at(i) == "\n")
         {
-            inside_square_brackets--;
+            is_init = false;
         }
-        else if (tokens.at(i) == "=")
+        else if (tokens.at(i) == "(" || tokens.at(i) == "[")
         {
-            is_initialisation = true;
+            bracket_stack.push_back(tokens.at(i));
         }
-        else if (tokens.at(i) != "[" && is_initialisation)
+        else if (tokens.at(i) == ")" || tokens.at(i) == "]")
         {
-            is_initialisation = false;
+            bracket_stack.pop_back();
         }
-        if (tokens.at(i) == "," && (inside_square_brackets >= 1 && is_initialisation))
+
+        if (tokens.at(i) == "," && (!is_init && bracket_stack.at(bracket_stack.size() - 1) == "["))
         {
             tokens.at(i) = "][";
         }
