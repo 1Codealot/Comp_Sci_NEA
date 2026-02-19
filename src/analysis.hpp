@@ -183,7 +183,7 @@ namespace analysis
                     errors += "you cannot use " + prev_token + " as an identifier again.\n";
                     continue;
                 }
-                if (!(std::regex_match(prev_token, std::regex("[A-Za-z_](\\w)*"))))
+                if (!(std::regex_match(prev_token, std::regex("([A-Za-z_](\\w)*)|(\])"))))
                 {
                     has_error = true;
                     errors += prev_token + " is not a valid identifier name\n";
