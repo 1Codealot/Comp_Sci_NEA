@@ -3,6 +3,7 @@
 #include "../include/raylib/raylib/include/raylib.h"
 #define RAYGUI_IMPLEMENTATION
 #include "../include/raylib/raygui/include/raygui.h"
+#include "font.hpp"
 
 Font jetbrainsMono;
 void startWindow()
@@ -10,7 +11,7 @@ void startWindow()
     // Initialises the window.
     InitWindow(950, 950, "OCR Reference Language Transpiler");
     SetTargetFPS(60);
-    jetbrainsMono = LoadFontEx("font/JetBrainsMono-Bold.ttf", 15, 0, 250);
+    jetbrainsMono = LoadFontFromMemory(".ttf", __font_JetBrainsMono_Bold_ttf, __font_JetBrainsMono_Bold_ttf_len, 15, 0, 250);
 }
 
 // Class definition for buttons
