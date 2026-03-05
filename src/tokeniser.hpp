@@ -101,9 +101,8 @@ namespace tokeniser // So thaat in future I can tell where functions come from.
                 {
                     new_tokens.pop_back(); // Remove the integer part
                     new_tokens.push_back(integer_part + "." + fraction_part);
-                    i++; // Skip over the fraction part.
+                    i+=2; // Skip over the fraction part.
                 }
-                continue;
             }
             new_tokens.push_back(tokens_in.at(i));
         }
