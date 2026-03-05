@@ -56,6 +56,19 @@ void compile(std::string path_to_input_file)
         return;
     }
 
+    // Create the file and path
+    std::string file_dir = std::string(output_filename);
+
+#ifndef _WIN32
+    file_dir = file_dir.substr(0, file_dir.find_last_of('/')); // Not windows
+#else
+    file_dir = file_dir.substr(0, file_dir.find_last_of('\\')); // Windows version
+#endif
+
+    file_dir = "mkdir -p " + file_dir;
+
+    std::system(file_dir.c_str());
+
     std::ofstream output_file(output_filename);
 
     output_file << python_code << "\n";
