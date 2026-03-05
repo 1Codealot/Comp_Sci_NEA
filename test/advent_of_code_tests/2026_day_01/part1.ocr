@@ -1,9 +1,26 @@
 // Read file
 input_text = open("input.txt")
-full_text = ""
+
+value = 50
+result = 0
 
 while NOT input_text.endOfFile()
-    full_text = full_text + input_text.readLine()
+    line = input_text.readLine()
+    if line.left(1) == "R" then
+        value = value + int(line.substring(1, line.length-1))
+    else
+        value = value - int(line.substring(1, line.length-1))
+    endif
+
+    if value < 100 then
+        value = value + 100
+    endif
+
+    value = value MOD 100
+
+    if value == 0 then
+        result = result +1
+    endif    
 endwhile
 
-print(full_text)
+print(str(result))
