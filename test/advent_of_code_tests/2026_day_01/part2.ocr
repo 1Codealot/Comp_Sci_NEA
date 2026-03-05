@@ -1,0 +1,30 @@
+// Read file
+input_text = open("input.txt")
+
+value = 50
+result = 0
+
+while NOT input_text.endOfFile()
+    line = input_text.readLine()
+    direction = 1
+    turn = int(line.substring(1, line.length-1))
+    if line.left(1) == "L" then
+        direction = -1
+    endif
+
+    for i=0 to (turn*direction) -1 step direction
+        value = value + direction
+
+        if value MOD 100 == 0 then
+            result = result + 1
+            value = value MOD 100
+        endif
+        if value < 0 then
+            value = value + 100
+        endif
+    next i
+
+    print(str(value) + "\n")
+endwhile
+
+print(str(result))
