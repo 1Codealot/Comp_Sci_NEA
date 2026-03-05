@@ -8,7 +8,7 @@
 std::string log_text;
 
 // So that the user can define their own output directory.
-std::string default_out_path = "./out/";
+char output_filename[max_text_size] = "./out/out.py";
 
 void compile(std::string path_to_input_file)
 {
@@ -24,7 +24,7 @@ void compile(std::string path_to_input_file)
     std::string code((std::istreambuf_iterator<char>(input_file)), std::istreambuf_iterator<char>());
 
     std::vector<std::string> tokens = tokenise("\n\n" + code + "\n\n");
-    
+
     int index = 0;
     for (std::string token : tokens)
     {
@@ -56,7 +56,7 @@ void compile(std::string path_to_input_file)
         return;
     }
 
-    std::ofstream output_file((default_out_path + "out.py").c_str());
+    std::ofstream output_file(output_filename);
 
     output_file << python_code << "\n";
     output_file.close();
@@ -66,6 +66,8 @@ char file_path[max_text_size] = "\0";
 
 int main()
 {
+    bool input_or_ouput_path_edit = true; // true => input; false => output
+    std::string toggle_button_text;
     startWindow();
 
     while (!WindowShouldClose())
@@ -73,11 +75,26 @@ int main()
         BeginDrawing();
         ClearBackground(WHITE);
 
-        // Creates the text box when the user will input the /path/to/file
-        text_box((Rectangle){50, 50, 200, 150}, "Enter path to input file", "", "Confirm", file_path);
+        if (input_or_ouput_path_edit)
+        {
+            // Creates the text box when the user will input the /path/to/file
+            text_box((Rectangle){50, 50, 200, 150}, "Enter path to input file", "", "Confirm", file_path);
+            toggle_button_text = "Press to edit output file path.";
+            // Creates the compile button
+            button compile_button((Rectangle){50, 200, 200, 50}, "Transpile!", compile, std::string(file_path));
+        }
+        else
+        {
+            // Creates a text box for the output path name.
+            text_box((Rectangle){50, 50, 200, 150}, "Enter output file name", "", "Confirm", output_filename);
+            toggle_button_text = "Press to edit input file path.";
+        }
 
-        // Creates the button
-        button compile_button((Rectangle){50, 200, 200, 50}, "Transpile!", compile, std::string(file_path));
+        // Button for switching between getting text for the output path or for the input path.
+        if (GuiButton((Rectangle){50, 300, 200, 50}, toggle_button_text.c_str()))
+        {
+            input_or_ouput_path_edit = !input_or_ouput_path_edit; // I.E. changes the state.
+        }
 
         scrollable_text_box((Rectangle){400, 50, 400, 500}, log_text + analysis::errors);
 
