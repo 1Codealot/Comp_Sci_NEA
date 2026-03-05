@@ -1,0 +1,9 @@
+// Read file
+input_text = open("input.txt")
+full_text = ""
+
+while NOT input_text.endOfFile()
+    full_text = full_text + input_text.readLine()
+endwhile
+
+print(full_text)
