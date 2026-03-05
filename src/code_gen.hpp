@@ -87,6 +87,11 @@ void search_and_replace(std::vector<std::string> &tokens)
             tokens.at(i) = "OCR_Random";
             continue;
         }
+        else if (tokens.at(i) == "length")
+        {
+            tokens.at(i) = "__len__()";
+            continue;
+        }
     }
 }
 
@@ -387,11 +392,7 @@ std::string gen_code(std::vector<std::string> tokens)
                 output_code += "[(" + start + "):(" + end + ")+(" + start + ")]";
                 continue;
             }
-            else if (tokens.at(i) == "length")
-            {
-                output_code += "__len__()";
-                continue;
-            }
+
             else if (tokens.at(i) == "do")
             {
                 output_code += "while True: ";
