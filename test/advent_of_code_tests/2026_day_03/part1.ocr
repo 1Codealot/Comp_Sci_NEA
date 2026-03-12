@@ -30,7 +30,6 @@ while NOT input_text.endOfFile()
         tmp = tmp * 10
         tmp = tmp + largest_nums[j]
     next j
-    print(str(tmp) + "\n")
     joltage = joltage + tmp
 endwhile
 print(str(joltage) + "\n")
