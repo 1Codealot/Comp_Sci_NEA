@@ -17,14 +17,12 @@ while NOT input_text.endOfFile()
     largest_nums[x] = 0
     i = next_start_index + 1
         while i < line.length - ((num_size - 1) - x) - 1
-            print("i: " + str(i) + "\n")
             if int(string_char_at(line, i)) > largest_nums[x] then
                 next_start_index = i
                 largest_nums[x] = int(string_char_at(line, i))
             endif
             i = i + 1
         endwhile
-        print("\n")
     next x
 
     tmp = 0
