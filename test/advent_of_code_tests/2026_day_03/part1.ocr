@@ -16,7 +16,7 @@ while NOT input_text.endOfFile()
     for x = 0 to num_size - 1
     largest_nums[x] = 0
     i = next_start_index + 1
-        while i < line.length - ((num_size - 1) - x) - 1
+        while i < line.length - num_size + x
             if int(string_char_at(line, i)) > largest_nums[x] then
                 next_start_index = i
                 largest_nums[x] = int(string_char_at(line, i))
